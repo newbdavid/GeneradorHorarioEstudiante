@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import com.generador.modelo.Cookies;
 import com.generador.modelo.Datos;
 import com.generador.utilidad.JTextFieldLimit;
 import com.generador.utilidad.MultiMapa;
@@ -47,6 +48,8 @@ public class GUI {
 	private JTable tabla;
 	private String strPathMateriasPosibles = "";
 	private String strPathHorarios = "";
+	
+	private PanelInicio panel;
 
 	public GUI() throws IOException, URISyntaxException {
 
@@ -88,12 +91,6 @@ public class GUI {
 		menuBar.add(menuPlanificador);
 		menuBar.add(ayuda);
 
-		// JPanel WebSAEW
-		JPanel panelWebSAEW = new JPanel();
-		panelWebSAEW.setLayout(new FlowLayout());
-		panelWebSAEW.setSize(500, 480);
-		panelWebSAEW.setVisible(true);
-
 		// JPanel Bienvenida
 		JPanel panelBienvenida = new JPanel();
 		panelBienvenida.setLayout(new BorderLayout());
@@ -111,24 +108,8 @@ public class GUI {
 		panelBienvenida.add(labelBienvenida, BorderLayout.CENTER);
 
 		// JPanel Cookies Session
-		JPanel panelCookies = new JPanel();
-		panelCookies.setLayout(new FlowLayout(FlowLayout.CENTER));
-		panelCookies.setSize(500, 480);
-
-		JLabel labelCookies = new JLabel("Ingresar Cookies de Sesión");
-		labelCookies.setHorizontalTextPosition(JLabel.CENTER);
-		labelCookies.setHorizontalAlignment(JLabel.CENTER);
-
-		JTextField txtfCookies = new JTextField(25);
-		txtfCookies.setDocument(new JTextFieldLimit(24));
-		txtfCookies.setHorizontalAlignment(JLabel.CENTER);
-
-		JButton btnSession = new JButton("Aceptar");
-
-		panelCookies.add(labelCookies, BorderLayout.CENTER);
-		panelCookies.add(txtfCookies, BorderLayout.CENTER);
-		panelCookies.add(btnSession, BorderLayout.CENTER);
-
+		panel = new PanelCookies();
+		
 		// JPanel Archivos Locales
 		JPanel panelArchivosLocales = new JPanel(new FlowLayout(
 				FlowLayout.TRAILING));
@@ -202,26 +183,13 @@ public class GUI {
 		});
 
 		itemCookieSession.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.setContentPane(panelCookies);
-				txtfCookies.setText(getStrCookie());
+				gui.setContentPane(panel.getPanel());
+				Cookies cookie = Cookies.instancia();
 				gui.repaint();
 				gui.setVisible(true);
-			}
-		});
-
-		btnSession.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (txtfCookies.getText().length() == 24) {
-					setStrCookie(txtfCookies.getText());
-				} else {
-					JOptionPane.showMessageDialog(null,
-							"Cookie de Sesión inválido");
-				}
 			}
 		});
 
@@ -240,7 +208,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileMatariasPosibles = new JFileChooser();
-				int result = fileMatariasPosibles.showOpenDialog(panelCookies);
+				int result = fileMatariasPosibles.showOpenDialog(null);
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fileMatariasPosibles.getSelectedFile();
 
@@ -267,7 +235,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileHorarios = new JFileChooser();
-				int result = fileHorarios.showOpenDialog(panelCookies);
+				int result = fileHorarios.showOpenDialog(null);
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fileHorarios.getSelectedFile();
 
