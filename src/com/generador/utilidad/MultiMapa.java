@@ -1,8 +1,10 @@
-package aplicacion;
+package com.generador.utilidad;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import com.generdor.modelo.Materia;
 
 // Clase para utilizar un multimapa
 

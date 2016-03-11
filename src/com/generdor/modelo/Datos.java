@@ -1,4 +1,4 @@
-package aplicacion;
+package com.generdor.modelo;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +9,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import com.generador.utilidad.MultiMapa;
 
 /**
  * Clase encargada de almacenar los datos de entrada en un multimapa

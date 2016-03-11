@@ -1,10 +1,12 @@
 /**
  * 
  */
-package aplicacion;
+package com.generador.controlador;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+
+import com.generador.vista.GUI;
 
 /**
  * Programa que automatiza el diseño del horarios para las/los estudiantes
