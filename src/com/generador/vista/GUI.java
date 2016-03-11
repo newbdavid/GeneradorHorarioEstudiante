@@ -1,4 +1,4 @@
-package aplicacion;
+package com.generador.vista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -30,6 +30,10 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
+import com.generador.utilidad.JTextFieldLimit;
+import com.generador.utilidad.MultiMapa;
+import com.generdor.modelo.Datos;
 
 /**
  * Clase encargada de desplegar la información en interfaz gráfica

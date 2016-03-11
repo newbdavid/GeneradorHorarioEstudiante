@@ -1,4 +1,4 @@
-package aplicacion;
+package com.generdor.modelo;
 
 /**
  * Clase encargada de la optimización del horario
