@@ -1,4 +1,4 @@
-package com.generdor.modelo;
+package com.generador.modelo;
 
 import java.util.ArrayList;
 import java.util.Calendar;
