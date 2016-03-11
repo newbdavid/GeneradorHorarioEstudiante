@@ -1,4 +1,4 @@
-package com.generdor.modelo;
+package com.generador.modelo;
 
 import java.io.File;
 import java.io.IOException;

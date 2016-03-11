@@ -1,4 +1,4 @@
-package com.generdor.modelo;
+package com.generador.modelo;
 
 /**
  * Clase que representa las materias

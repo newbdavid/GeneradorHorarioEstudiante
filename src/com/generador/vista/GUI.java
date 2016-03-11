@@ -31,9 +31,9 @@ import javax.swing.table.DefaultTableModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import com.generador.modelo.Datos;
 import com.generador.utilidad.JTextFieldLimit;
 import com.generador.utilidad.MultiMapa;
-import com.generdor.modelo.Datos;
 
 /**
  * Clase encargada de desplegar la información en interfaz gráfica
