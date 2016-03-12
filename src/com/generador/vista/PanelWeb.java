@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  *
  */
 
-public class PanelWeb extends PanelInicio {
+public class PanelWeb extends Panel {
 	
 	private JPanel panelWeb;
 	

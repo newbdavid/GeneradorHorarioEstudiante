@@ -22,7 +22,7 @@ import com.generador.utilidad.JTextFieldLimit;
  *
  */
 
-public class PanelCookies extends PanelInicio {
+public class PanelCookies extends Panel {
 
 	private JPanel panelCookies;
 	private Cookies cookie;

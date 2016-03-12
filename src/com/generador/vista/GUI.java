@@ -49,7 +49,7 @@ public class GUI {
 	private String strPathMateriasPosibles = "";
 	private String strPathHorarios = "";
 	
-	private PanelInicio panel;
+	private Panel panelCookies, panelArchivosLocales;
 
 	public GUI() throws IOException, URISyntaxException {
 
@@ -108,39 +108,11 @@ public class GUI {
 		panelBienvenida.add(labelBienvenida, BorderLayout.CENTER);
 
 		// JPanel Cookies Session
-		panel = new PanelCookies();
+		panelCookies = new PanelCookies();
 		
 		// JPanel Archivos Locales
-		JPanel panelArchivosLocales = new JPanel(new FlowLayout(
-				FlowLayout.TRAILING));
-
-		JLabel labelLocalMateriasPosibles = new JLabel(
-				"Archivo - Materias Posibles");
-		JLabel labelPathMateriaPosibles = new JLabel("");
-		labelLocalMateriasPosibles.setHorizontalTextPosition(JLabel.CENTER);
-		JButton btnMateriasPosibles = new JButton("Seleccionar");
-
-		JLabel labelLocalHorarios = new JLabel("Archivo - Horarios");
-		JLabel labelPathHorarios = new JLabel("");
-		labelLocalHorarios.setHorizontalTextPosition(JLabel.CENTER);
-		JButton btnHorarios = new JButton("Seleccionar");
-
-		panelArchivosLocales.add(labelLocalMateriasPosibles,
-				BorderLayout.CENTER);
-		panelArchivosLocales.add(new JLabel("                   "),
-				BorderLayout.CENTER);
-		panelArchivosLocales.add(btnMateriasPosibles, BorderLayout.CENTER);
-		panelArchivosLocales.add(labelPathMateriaPosibles, BorderLayout.CENTER);
-		panelArchivosLocales.add(new JLabel(
-				"                                                                 "
-						+ "                              "),
-				BorderLayout.CENTER);
-		panelArchivosLocales.add(labelLocalHorarios, BorderLayout.CENTER);
-		panelArchivosLocales.add(new JLabel("                   "),
-				BorderLayout.CENTER);
-		panelArchivosLocales.add(btnHorarios, BorderLayout.CENTER);
-		panelArchivosLocales.add(labelPathHorarios, BorderLayout.CENTER);
-
+		panelArchivosLocales = new PanelArchivos();
+		
 		// TODO JPanel Exportar
 		itemExportar.setEnabled(false);
 
@@ -186,7 +158,7 @@ public class GUI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.setContentPane(panel.getPanel());
+				gui.setContentPane(panelCookies.getPanel());
 				Cookies cookie = Cookies.instancia();
 				gui.repaint();
 				gui.setVisible(true);
@@ -197,59 +169,9 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.setContentPane(panelArchivosLocales);
+				gui.setContentPane(panelArchivosLocales.getPanel());
 				gui.repaint();
 				gui.setVisible(true);
-			}
-		});
-
-		btnMateriasPosibles.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileMatariasPosibles = new JFileChooser();
-				int result = fileMatariasPosibles.showOpenDialog(null);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectedFile = fileMatariasPosibles.getSelectedFile();
-
-					if (selectedFile.getAbsolutePath().matches(
-							".*Materias Posibles\\.html$")) {
-						setStrPathMateriasPosibles(selectedFile
-								.getAbsolutePath());
-						labelPathMateriaPosibles.setText(selectedFile
-								.getAbsolutePath());
-					} else {
-						JOptionPane
-								.showMessageDialog(
-										null,
-										"Archivo: Materias Posibles invalido\n"
-												+ "Seleccionar archivo Materias Posibles.html");
-					}
-
-				}
-			}
-		});
-
-		btnHorarios.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileHorarios = new JFileChooser();
-				int result = fileHorarios.showOpenDialog(null);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectedFile = fileHorarios.getSelectedFile();
-
-					if (selectedFile.getAbsolutePath().matches(
-							".*Horarios\\.html$")) {
-						setStrPathHorarios(selectedFile.getAbsolutePath());
-						labelPathHorarios.setText(selectedFile
-								.getAbsolutePath());
-					} else {
-						JOptionPane.showMessageDialog(null,
-								"Archivo: Horarios invalido\n"
-										+ "Seleccionar archivo Horarios.html");
-					}
-				}
 			}
 		});
 

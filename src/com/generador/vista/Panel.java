@@ -13,7 +13,7 @@ import javax.swing.JPanel;
  *
  */
 
-public abstract class PanelInicio implements Observer{
+public abstract class Panel implements Observer{
 
 	protected abstract JPanel getPanel();
 	protected abstract void setContenido();
