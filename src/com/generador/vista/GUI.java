@@ -49,7 +49,7 @@ public class GUI {
 	private String strPathMateriasPosibles = "";
 	private String strPathHorarios = "";
 	
-	private Panel panelCookies, panelArchivosLocales;
+	private Panel panelWeb, panelCookies, panelArchivosLocales;
 
 	public GUI() throws IOException, URISyntaxException {
 
@@ -107,6 +107,9 @@ public class GUI {
 		labelBienvenida.setHorizontalAlignment(JLabel.CENTER);
 		panelBienvenida.add(labelBienvenida, BorderLayout.CENTER);
 
+		// JPanel Web Form
+		panelWeb = new PanelWeb();
+		
 		// JPanel Cookies Session
 		panelCookies = new PanelCookies();
 		
@@ -140,6 +143,15 @@ public class GUI {
 		// Eventos
 		itemWebSaew.addActionListener(new ActionListener() {
 
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gui.setContentPane(panelWeb.getPanel());
+				Cookies cookie = Cookies.instancia();
+				gui.repaint();
+				gui.setVisible(true);
+			}
+			/*
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -152,6 +164,7 @@ public class GUI {
 				gui.repaint();
 				gui.setVisible(true);
 			}
+			*/
 		});
 
 		itemCookieSession.addActionListener(new ActionListener() {
@@ -302,32 +315,6 @@ public class GUI {
 
 	public void setStrPathHorarios(String strPathHorarios) {
 		this.strPathHorarios = strPathHorarios;
-	}
-
-	// Web SAEW
-	private JScrollPane webPage() throws IOException, URISyntaxException {
-
-		JEditorPane jEditWebPage = new JEditorPane();
-		jEditWebPage.setEditable(false);
-		jEditWebPage.setFocusable(false);
-		jEditWebPage.setVisible(true);
-
-		CookieManager manager = new CookieManager();
-		manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-		CookieHandler.setDefault(manager);
-
-		try {
-			jEditWebPage.setPage("https://saew.epn.edu.ec");
-		} catch (IOException e) {
-			jEditWebPage.setContentType("text/html");
-			jEditWebPage
-					.setText("<html><h1>Error</h1><p>No se puede cargar https://saew.epn.edu.ec</p></html>");
-		}
-
-		JScrollPane scrollPane = new JScrollPane(jEditWebPage);
-		setStrCookie(manager.getCookieStore().getCookies().get(0).toString()
-				.substring(18));
-		return scrollPane;
 	}
 
 	// Llenado de tabla
