@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.jsoup.nodes.Document;
+
 import com.generador.utilidad.JTextFieldLimit;
 
 /**
