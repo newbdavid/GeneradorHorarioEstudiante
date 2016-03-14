@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Observable;
 
 import javax.swing.JButton;
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.generador.modelo.Cookies;
@@ -49,11 +51,45 @@ public class PanelCookies extends Panel {
 			public void actionPerformed(ActionEvent e) {
 				if (txtCookies.getText().length() == 24) {
 					cookie.setStrCookies(txtCookies.getText());
+					setDocHorarioMaterias(getDocHorarioMaterias());
+					setDocMateriasPosibles(getDocMateriasPosibles());
+					
 				} else {
 					JOptionPane.showMessageDialog(null,"Cookie de Sesión inválido");
 				}
 			}
 		});
+	}
+	
+	public Document getDocMateriasPosibles() {
+		
+		Document materiasPosibles = null;
+		try {
+			materiasPosibles = Jsoup.connect("https://saew.epn.edu.ec/SAEINF/MateriasPosibles.aspx")
+					.cookie("ASP.NET_SessionId", cookie.getStrCookies())
+					.get();
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Error: Obtener materias posibles");
+		}
+		
+		return materiasPosibles;
+	}
+	
+	public Document getDocHorarioMaterias() {
+		
+		Document horarios = null;
+		try {
+			horarios = Jsoup.connect("https://saew.epn.edu.ec/SAEINF/HorariosMaterias.aspx")
+					.cookie("ASP.NET_SessionId", cookie.getStrCookies())
+					.get();
+			System.out.println(horarios.html().toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Error: Obtener materias posibles");
+		}
+		
+		return horarios;
 	}
 	
 	@Override
