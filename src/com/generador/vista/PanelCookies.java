@@ -83,7 +83,6 @@ public class PanelCookies extends Panel {
 			horarios = Jsoup.connect("https://saew.epn.edu.ec/SAEINF/HorariosMaterias.aspx")
 					.cookie("ASP.NET_SessionId", cookie.getStrCookies())
 					.get();
-			System.out.println(horarios.html().toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null,"Error: Obtener materias posibles");
