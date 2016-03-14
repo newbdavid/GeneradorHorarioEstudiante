@@ -2,7 +2,7 @@ package com.generador.modelo;
 
 import java.util.Observable;
 
-public class Cookies extends Observable{
+public class Cookies extends Observable {
 
 	private String strCookies;
 	public static Cookies cookie = null;
