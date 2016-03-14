@@ -1,21 +1,13 @@
 package com.generador.vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.net.URISyntaxException;
 
-import javax.swing.JButton;
-import javax.swing.JEditorPane;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -25,16 +17,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import com.generador.controlador.Documentos;
-import com.generador.modelo.Cookies;
 import com.generador.modelo.Datos;
-import com.generador.utilidad.JTextFieldLimit;
 import com.generador.utilidad.MultiMapa;
 
 /**
