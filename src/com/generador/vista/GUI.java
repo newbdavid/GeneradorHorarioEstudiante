@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import com.generador.controlador.Documentos;
 import com.generador.modelo.Cookies;
 import com.generador.modelo.Datos;
 import com.generador.utilidad.JTextFieldLimit;
@@ -61,8 +62,8 @@ public class GUI {
 
 		// Menu archivo
 		JMenu menuArchivo = new JMenu("Archivo");
-		JMenu menuLogin = new JMenu("Login");
-		JMenuItem itemWebSaew = new JMenuItem("Web SAEW");
+		JMenu menuLogin = new JMenu("Origen de datos");
+		JMenuItem itemWebSaew = new JMenuItem("Iniciar sesión SAEW");
 		JMenuItem itemCookieSession = new JMenuItem("Cookies de sesión");
 		JMenuItem itemLocalFiles = new JMenuItem("Archivos locales");
 		JMenuItem itemExportar = new JMenuItem("Exportar");
@@ -143,28 +144,12 @@ public class GUI {
 		// Eventos
 		itemWebSaew.addActionListener(new ActionListener() {
 
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gui.setContentPane(panelWeb.getPanel());
-				Cookies cookie = Cookies.instancia();
 				gui.repaint();
 				gui.setVisible(true);
 			}
-			/*
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					gui.setContentPane(webPage());
-				} catch (IOException | URISyntaxException e1) {
-					JOptionPane.showMessageDialog(null,
-							"¡Error en opción Web SAEW!");
-					e1.printStackTrace();
-				}
-				gui.repaint();
-				gui.setVisible(true);
-			}
-			*/
 		});
 
 		itemCookieSession.addActionListener(new ActionListener() {
@@ -172,7 +157,6 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gui.setContentPane(panelCookies.getPanel());
-				Cookies cookie = Cookies.instancia();
 				gui.repaint();
 				gui.setVisible(true);
 			}
@@ -201,74 +185,18 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (!getStrCookie().equals("")
-						|| !getStrPathHorarios().equals("")
-						|| !getStrCookie().equals("")) {
-
-					if (!getStrPathHorarios().equals("")
-							&& !getStrPathMateriasPosibles().equals("")) {
-						Datos dat;
-						try {
-							dat = new Datos(new File(
-									getStrPathMateriasPosibles()), new File(
-									getStrPathHorarios()));
-							setUpTableData(dat.getMapMaterias());
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-						gui.setContentPane(new JScrollPane(getTableData()));
-						gui.repaint();
-						gui.setVisible(true);
-					} else if (!getStrCookie().equals("")) {
-						try {
-							Document materiasPosibles = Jsoup
-									.connect(
-											"https://saew.epn.edu.ec/SAEINF/MateriasPosibles.aspx")
-									.cookie("ASP.NET_SessionId", getStrCookie())
-									.get();
-							System.out.println(materiasPosibles.html()
-									.toString());
-
-							Document horarios = Jsoup
-									.connect(
-											"https://saew.epn.edu.ec/SAEINF/HorariosMaterias.aspx")
-									.cookie("ASP.NET_SessionId", getStrCookie())
-									.get();
-							System.out.println(horarios.html().toString());
-
-							// Verifica si hay error
-							if (!(materiasPosibles.title().matches(".*Error$") || horarios
-									.title().matches(".*Error$"))) {
-								Datos dat = new Datos(materiasPosibles,
-										horarios);
-								setUpTableData(dat.getMapMaterias());
-							} else {
-								JOptionPane
-										.showMessageDialog(
-												null,
-												"Error Cookies de Sesión\n"
-														+ "Verificar si se encuentra autenticado.");
-							}
-
-						} catch (IOException e1) {
-							JOptionPane
-									.showMessageDialog(
-											null,
-											"Error Cookies de Sesión\n"
-													+ "Verificar si se encuentra autenticado.");
-							e1.printStackTrace();
-						}
-						gui.setContentPane(new JScrollPane(getTableData()));
-						gui.repaint();
-						gui.setVisible(true);
-
-					} else {
-						JOptionPane.showMessageDialog(null, "No entré :(");
-					}
-				} else {
-					JOptionPane
-							.showMessageDialog(null,
-									"Seleccionar un método para cargar la información de las materias");
+				Documentos documentos;
+				documentos = Documentos.instancia();
+				
+				if (documentos.isValid()) {
+					Datos dat;
+					
+					dat = new Datos(documentos.getDocMateriasPosibles(), documentos.getDocHorarioMaterias());
+					setUpTableData(dat.getMapMaterias());
+					
+					gui.setContentPane(new JScrollPane(getTableData()));
+					gui.repaint();
+					gui.setVisible(true);
 				}
 			}
 		});
