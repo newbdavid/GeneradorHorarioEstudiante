@@ -1,21 +1,13 @@
 package com.generador.vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.net.URISyntaxException;
 
-import javax.swing.JButton;
-import javax.swing.JEditorPane;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -25,14 +17,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
+import com.generador.controlador.Documentos;
 import com.generador.modelo.Datos;
-import com.generador.utilidad.JTextFieldLimit;
 import com.generador.utilidad.MultiMapa;
 
 /**
@@ -47,6 +35,8 @@ public class GUI {
 	private JTable tabla;
 	private String strPathMateriasPosibles = "";
 	private String strPathHorarios = "";
+	
+	private Panel panelWeb, panelCookies, panelArchivosLocales;
 
 	public GUI() throws IOException, URISyntaxException {
 
@@ -58,8 +48,8 @@ public class GUI {
 
 		// Menu archivo
 		JMenu menuArchivo = new JMenu("Archivo");
-		JMenu menuLogin = new JMenu("Login");
-		JMenuItem itemWebSaew = new JMenuItem("Web SAEW");
+		JMenu menuLogin = new JMenu("Origen de datos");
+		JMenuItem itemWebSaew = new JMenuItem("Iniciar sesión SAEW");
 		JMenuItem itemCookieSession = new JMenuItem("Cookies de sesión");
 		JMenuItem itemLocalFiles = new JMenuItem("Archivos locales");
 		JMenuItem itemExportar = new JMenuItem("Exportar");
@@ -88,12 +78,6 @@ public class GUI {
 		menuBar.add(menuPlanificador);
 		menuBar.add(ayuda);
 
-		// JPanel WebSAEW
-		JPanel panelWebSAEW = new JPanel();
-		panelWebSAEW.setLayout(new FlowLayout());
-		panelWebSAEW.setSize(500, 480);
-		panelWebSAEW.setVisible(true);
-
 		// JPanel Bienvenida
 		JPanel panelBienvenida = new JPanel();
 		panelBienvenida.setLayout(new BorderLayout());
@@ -110,56 +94,15 @@ public class GUI {
 		labelBienvenida.setHorizontalAlignment(JLabel.CENTER);
 		panelBienvenida.add(labelBienvenida, BorderLayout.CENTER);
 
+		// JPanel Web Form
+		panelWeb = new PanelWeb();
+		
 		// JPanel Cookies Session
-		JPanel panelCookies = new JPanel();
-		panelCookies.setLayout(new FlowLayout(FlowLayout.CENTER));
-		panelCookies.setSize(500, 480);
-
-		JLabel labelCookies = new JLabel("Ingresar Cookies de Sesión");
-		labelCookies.setHorizontalTextPosition(JLabel.CENTER);
-		labelCookies.setHorizontalAlignment(JLabel.CENTER);
-
-		JTextField txtfCookies = new JTextField(25);
-		txtfCookies.setDocument(new JTextFieldLimit(24));
-		txtfCookies.setHorizontalAlignment(JLabel.CENTER);
-
-		JButton btnSession = new JButton("Aceptar");
-
-		panelCookies.add(labelCookies, BorderLayout.CENTER);
-		panelCookies.add(txtfCookies, BorderLayout.CENTER);
-		panelCookies.add(btnSession, BorderLayout.CENTER);
-
+		panelCookies = new PanelCookies();
+		
 		// JPanel Archivos Locales
-		JPanel panelArchivosLocales = new JPanel(new FlowLayout(
-				FlowLayout.TRAILING));
-
-		JLabel labelLocalMateriasPosibles = new JLabel(
-				"Archivo - Materias Posibles");
-		JLabel labelPathMateriaPosibles = new JLabel("");
-		labelLocalMateriasPosibles.setHorizontalTextPosition(JLabel.CENTER);
-		JButton btnMateriasPosibles = new JButton("Seleccionar");
-
-		JLabel labelLocalHorarios = new JLabel("Archivo - Horarios");
-		JLabel labelPathHorarios = new JLabel("");
-		labelLocalHorarios.setHorizontalTextPosition(JLabel.CENTER);
-		JButton btnHorarios = new JButton("Seleccionar");
-
-		panelArchivosLocales.add(labelLocalMateriasPosibles,
-				BorderLayout.CENTER);
-		panelArchivosLocales.add(new JLabel("                   "),
-				BorderLayout.CENTER);
-		panelArchivosLocales.add(btnMateriasPosibles, BorderLayout.CENTER);
-		panelArchivosLocales.add(labelPathMateriaPosibles, BorderLayout.CENTER);
-		panelArchivosLocales.add(new JLabel(
-				"                                                                 "
-						+ "                              "),
-				BorderLayout.CENTER);
-		panelArchivosLocales.add(labelLocalHorarios, BorderLayout.CENTER);
-		panelArchivosLocales.add(new JLabel("                   "),
-				BorderLayout.CENTER);
-		panelArchivosLocales.add(btnHorarios, BorderLayout.CENTER);
-		panelArchivosLocales.add(labelPathHorarios, BorderLayout.CENTER);
-
+		panelArchivosLocales = new PanelArchivos();
+		
 		// TODO JPanel Exportar
 		itemExportar.setEnabled(false);
 
@@ -189,39 +132,19 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					gui.setContentPane(webPage());
-				} catch (IOException | URISyntaxException e1) {
-					JOptionPane.showMessageDialog(null,
-							"¡Error en opción Web SAEW!");
-					e1.printStackTrace();
-				}
+				gui.setContentPane(panelWeb.getPanel());
 				gui.repaint();
 				gui.setVisible(true);
 			}
 		});
 
 		itemCookieSession.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.setContentPane(panelCookies);
-				txtfCookies.setText(getStrCookie());
+				gui.setContentPane(panelCookies.getPanel());
 				gui.repaint();
 				gui.setVisible(true);
-			}
-		});
-
-		btnSession.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (txtfCookies.getText().length() == 24) {
-					setStrCookie(txtfCookies.getText());
-				} else {
-					JOptionPane.showMessageDialog(null,
-							"Cookie de Sesión inválido");
-				}
 			}
 		});
 
@@ -229,59 +152,9 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.setContentPane(panelArchivosLocales);
+				gui.setContentPane(panelArchivosLocales.getPanel());
 				gui.repaint();
 				gui.setVisible(true);
-			}
-		});
-
-		btnMateriasPosibles.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileMatariasPosibles = new JFileChooser();
-				int result = fileMatariasPosibles.showOpenDialog(panelCookies);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectedFile = fileMatariasPosibles.getSelectedFile();
-
-					if (selectedFile.getAbsolutePath().matches(
-							".*Materias Posibles\\.html$")) {
-						setStrPathMateriasPosibles(selectedFile
-								.getAbsolutePath());
-						labelPathMateriaPosibles.setText(selectedFile
-								.getAbsolutePath());
-					} else {
-						JOptionPane
-								.showMessageDialog(
-										null,
-										"Archivo: Materias Posibles invalido\n"
-												+ "Seleccionar archivo Materias Posibles.html");
-					}
-
-				}
-			}
-		});
-
-		btnHorarios.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileHorarios = new JFileChooser();
-				int result = fileHorarios.showOpenDialog(panelCookies);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectedFile = fileHorarios.getSelectedFile();
-
-					if (selectedFile.getAbsolutePath().matches(
-							".*Horarios\\.html$")) {
-						setStrPathHorarios(selectedFile.getAbsolutePath());
-						labelPathHorarios.setText(selectedFile
-								.getAbsolutePath());
-					} else {
-						JOptionPane.showMessageDialog(null,
-								"Archivo: Horarios invalido\n"
-										+ "Seleccionar archivo Horarios.html");
-					}
-				}
 			}
 		});
 
@@ -298,74 +171,18 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (!getStrCookie().equals("")
-						|| !getStrPathHorarios().equals("")
-						|| !getStrCookie().equals("")) {
-
-					if (!getStrPathHorarios().equals("")
-							&& !getStrPathMateriasPosibles().equals("")) {
-						Datos dat;
-						try {
-							dat = new Datos(new File(
-									getStrPathMateriasPosibles()), new File(
-									getStrPathHorarios()));
-							setUpTableData(dat.getMapMaterias());
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-						gui.setContentPane(new JScrollPane(getTableData()));
-						gui.repaint();
-						gui.setVisible(true);
-					} else if (!getStrCookie().equals("")) {
-						try {
-							Document materiasPosibles = Jsoup
-									.connect(
-											"https://saew.epn.edu.ec/SAEINF/MateriasPosibles.aspx")
-									.cookie("ASP.NET_SessionId", getStrCookie())
-									.get();
-							System.out.println(materiasPosibles.html()
-									.toString());
-
-							Document horarios = Jsoup
-									.connect(
-											"https://saew.epn.edu.ec/SAEINF/HorariosMaterias.aspx")
-									.cookie("ASP.NET_SessionId", getStrCookie())
-									.get();
-							System.out.println(horarios.html().toString());
-
-							// Verifica si hay error
-							if (!(materiasPosibles.title().matches(".*Error$") || horarios
-									.title().matches(".*Error$"))) {
-								Datos dat = new Datos(materiasPosibles,
-										horarios);
-								setUpTableData(dat.getMapMaterias());
-							} else {
-								JOptionPane
-										.showMessageDialog(
-												null,
-												"Error Cookies de Sesión\n"
-														+ "Verificar si se encuentra autenticado.");
-							}
-
-						} catch (IOException e1) {
-							JOptionPane
-									.showMessageDialog(
-											null,
-											"Error Cookies de Sesión\n"
-													+ "Verificar si se encuentra autenticado.");
-							e1.printStackTrace();
-						}
-						gui.setContentPane(new JScrollPane(getTableData()));
-						gui.repaint();
-						gui.setVisible(true);
-
-					} else {
-						JOptionPane.showMessageDialog(null, "No entré :(");
-					}
-				} else {
-					JOptionPane
-							.showMessageDialog(null,
-									"Seleccionar un método para cargar la información de las materias");
+				Documentos documentos;
+				documentos = Documentos.instancia();
+				
+				if (documentos.isValid()) {
+					Datos dat;
+					
+					dat = new Datos(documentos.getDocMateriasPosibles(), documentos.getDocHorarioMaterias());
+					setUpTableData(dat.getMapMaterias());
+					
+					gui.setContentPane(new JScrollPane(getTableData()));
+					gui.repaint();
+					gui.setVisible(true);
 				}
 			}
 		});
@@ -412,32 +229,6 @@ public class GUI {
 
 	public void setStrPathHorarios(String strPathHorarios) {
 		this.strPathHorarios = strPathHorarios;
-	}
-
-	// Web SAEW
-	private JScrollPane webPage() throws IOException, URISyntaxException {
-
-		JEditorPane jEditWebPage = new JEditorPane();
-		jEditWebPage.setEditable(false);
-		jEditWebPage.setFocusable(false);
-		jEditWebPage.setVisible(true);
-
-		CookieManager manager = new CookieManager();
-		manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-		CookieHandler.setDefault(manager);
-
-		try {
-			jEditWebPage.setPage("https://saew.epn.edu.ec");
-		} catch (IOException e) {
-			jEditWebPage.setContentType("text/html");
-			jEditWebPage
-					.setText("<html><h1>Error</h1><p>No se puede cargar https://saew.epn.edu.ec</p></html>");
-		}
-
-		JScrollPane scrollPane = new JScrollPane(jEditWebPage);
-		setStrCookie(manager.getCookieStore().getCookies().get(0).toString()
-				.substring(18));
-		return scrollPane;
 	}
 
 	// Llenado de tabla
