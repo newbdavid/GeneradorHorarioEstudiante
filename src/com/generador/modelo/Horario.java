@@ -18,12 +18,12 @@ import java.util.StringTokenizer;
 
 public class Horario {
 
-	private List<Calendar> lunes = new ArrayList<Calendar>();
-	private List<Calendar> martes = new ArrayList<Calendar>();
-	private List<Calendar> miercoles = new ArrayList<Calendar>();
-	private List<Calendar> jueves = new ArrayList<Calendar>();
-	private List<Calendar> viernes = new ArrayList<Calendar>();
-	private List<Calendar> sabado = new ArrayList<Calendar>();
+	private List<Integer> lunes = new ArrayList<Integer>();
+	private List<Integer> martes = new ArrayList<Integer>();
+	private List<Integer> miercoles = new ArrayList<Integer>();
+	private List<Integer> jueves = new ArrayList<Integer>();
+	private List<Integer> viernes = new ArrayList<Integer>();
+	private List<Integer> sabado = new ArrayList<Integer>();
 	StringTokenizer tokens;
 	
 	/**
@@ -50,117 +50,13 @@ public class Horario {
 		 * necesidad de limpiar los datos de entrada
 		 */
 		
-		/*
-		if (!lunes.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(lunes, "-");
-			aux1.set(2015, 8, 31,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.lunes.add(aux1);
-			aux2.set(2015, 8, 31,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.lunes.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.lunes.add(aux1);
-			this.lunes.add(aux1);
-		}
-
-		if (!martes.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(martes, "-");
-			aux1.set(2015, 8, 1,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.martes.add(aux1);
-			aux2.set(2015, 8, 1,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.martes.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.martes.add(aux1);
-			this.martes.add(aux1);
-		}
-
-		if (!miercoles.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(miercoles, "-");
-			aux1.set(2015, 8, 2,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.miercoles.add(aux1);
-			aux2.set(2015, 8, 2,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.miercoles.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.miercoles.add(aux1);
-			this.miercoles.add(aux1);
-		}
-
-		if (!jueves.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(jueves, "-");
-			aux1.set(2015, 8, 3,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")),
-					0, 0);
-			this.jueves.add(aux1);
-			aux2.set(2015, 8, 3,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")),
-					0, 0);
-			this.jueves.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.jueves.add(aux1);
-			this.jueves.add(aux1);
-		}
-
-		if (!viernes.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(viernes, "-");
-			aux1.set(2015, 9, 4,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.viernes.add(aux1);
-			aux2.set(2015, 9, 4,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.viernes.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.viernes.add(aux1);
-			this.viernes.add(aux1);
-		}
-
-		if (!sabado.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(sabado, "-");
-			aux1.set(2015, 9, 5,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.sabado.add(aux1);
-			aux2.set(2015, 9, 5,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.sabado.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.sabado.add(aux1);
-			this.sabado.add(aux1);
-		}
-		*/
+		this.lunes = generadorHorarioDia(lunes);
+		this.martes = generadorHorarioDia(martes);
+		this.miercoles = generadorHorarioDia(miercoles);
+		this.jueves = generadorHorarioDia(jueves);
+		this.viernes = generadorHorarioDia(viernes);
+		this.sabado = generadorHorarioDia(sabado);
+		
 	}
 	
 	/**
@@ -189,7 +85,7 @@ public class Horario {
 	/**
 	 * @return Horario del día lunes
 	 */
-	public List<Calendar> getLunes() {
+	public List<Integer> getLunes() {
 		return lunes;
 	}
 
@@ -197,14 +93,14 @@ public class Horario {
 	 * @param lunes
 	 *            Horario del día lunes
 	 */
-	public void setLunes(List<Calendar> lunes) {
+	public void setLunes(List<Integer> lunes) {
 		this.lunes = lunes;
 	}
 
 	/**
 	 * @return Horario del día martes
 	 */
-	public List<Calendar> getMartes() {
+	public List<Integer> getMartes() {
 		return martes;
 	}
 
@@ -212,14 +108,14 @@ public class Horario {
 	 * @param martes
 	 *            Horario del día martes
 	 */
-	public void setMartes(List<Calendar> martes) {
+	public void setMartes(List<Integer> martes) {
 		this.martes = martes;
 	}
 
 	/**
 	 * @return Horario del día miercoles
 	 */
-	public List<Calendar> getMiercoles() {
+	public List<Integer> getMiercoles() {
 		return miercoles;
 	}
 
@@ -227,14 +123,14 @@ public class Horario {
 	 * @param miercoles
 	 *            Horario del día miercoles
 	 */
-	public void setMiercoles(List<Calendar> miercoles) {
+	public void setMiercoles(List<Integer> miercoles) {
 		this.miercoles = miercoles;
 	}
 
 	/**
 	 * @return Horario del día jueves
 	 */
-	public List<Calendar> getJueves() {
+	public List<Integer> getJueves() {
 		return jueves;
 	}
 
@@ -242,14 +138,14 @@ public class Horario {
 	 * @param jueves
 	 *            Horario del día jueves
 	 */
-	public void setJueves(List<Calendar> jueves) {
+	public void setJueves(List<Integer> jueves) {
 		this.jueves = jueves;
 	}
 
 	/**
 	 * @return Horario del día viernes
 	 */
-	public List<Calendar> getViernes() {
+	public List<Integer> getViernes() {
 		return viernes;
 	}
 
@@ -257,14 +153,14 @@ public class Horario {
 	 * @param viernes
 	 *            Horario del día viernes
 	 */
-	public void setViernes(List<Calendar> viernes) {
+	public void setViernes(List<Integer> viernes) {
 		this.viernes = viernes;
 	}
 
 	/**
 	 * @return Horario del día sábado
 	 */
-	public List<Calendar> getSabado() {
+	public List<Integer> getSabado() {
 		return sabado;
 	}
 
@@ -272,7 +168,7 @@ public class Horario {
 	 * @param sabado
 	 *            Horario del día sábado
 	 */
-	public void setSabado(List<Calendar> sabado) {
+	public void setSabado(List<Integer> sabado) {
 		this.sabado = sabado;
 	}
 
@@ -286,6 +182,7 @@ public class Horario {
 	public List<Boolean> choca(Horario anotherHorario) {
 		List<Boolean> choca = new ArrayList<>();
 
+		/*
 		if ((this.lunes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.lunes
 				.get(0).get(Calendar.HOUR_OF_DAY) && this.lunes.get(1).get(
 				Calendar.HOUR_OF_DAY) > anotherHorario.lunes.get(0).get(
@@ -357,7 +254,7 @@ public class Horario {
 			choca.add(true);
 		else
 			choca.add(false);
-
+		 */
 		return choca;
 	}
 }
