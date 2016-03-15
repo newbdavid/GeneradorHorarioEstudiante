@@ -24,7 +24,8 @@ public class Horario {
 	private List<Calendar> jueves = new ArrayList<Calendar>();
 	private List<Calendar> viernes = new ArrayList<Calendar>();
 	private List<Calendar> sabado = new ArrayList<Calendar>();
-
+	StringTokenizer tokens;
+	
 	/**
 	 * Constructor de la clase Horario
 	 * 
@@ -44,13 +45,12 @@ public class Horario {
 	public Horario(String lunes, String martes, String miercoles,
 			String jueves, String viernes, String sabado) {
 
-		// TODO proceso para tomar fecha exacta
-		StringTokenizer tokens;
-
 		/*
 		 * Debido a caraceter vacio inicial desde la fuente de datos se ve en la
 		 * necesidad de limpiar los datos de entrada
 		 */
+		
+		/*
 		if (!lunes.equalsIgnoreCase(" ")) {
 			Calendar aux1 = Calendar.getInstance();
 			Calendar aux2 = Calendar.getInstance();
@@ -159,6 +159,30 @@ public class Horario {
 			aux1.set(2015, 1, 1, 1, 0);
 			this.sabado.add(aux1);
 			this.sabado.add(aux1);
+		}
+		*/
+	}
+	
+	/**
+	 * 
+	 * @param horario Horario correspondiente a un día de una materia
+	 * @return 
+	 * Una lista que contiene los horarios
+	 * si no existe horario: null
+	 * 			
+	 */
+	
+	public List<Integer> generadorHorarioDia(String horario) {
+		
+		List<Integer> listaHorario = null;
+		if (!horario.equals(" ")) {
+			listaHorario = new ArrayList<Integer>(2);
+			tokens = new StringTokenizer(horario, "-");
+			listaHorario.add(Integer.parseInt(tokens.nextToken().replaceAll(" ", "")));
+			listaHorario.add(Integer.parseInt(tokens.nextToken().replaceAll(" ", "")));
+			return listaHorario;
+		} else {
+			return listaHorario;
 		}
 	}
 
