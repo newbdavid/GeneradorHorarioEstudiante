@@ -9,15 +9,16 @@ import java.util.Observable;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -28,7 +29,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.generador.modelo.Cookies;
-import com.generador.utilidad.JTextFieldLimit;
+import com.generador.utilidad.Formateador;
 
 /**
  * Clase que ofrece la vista de login por medio de Form
@@ -42,7 +43,7 @@ public class PanelWeb extends Panel {
 	private JPanel panelWeb;
 	private JButton btnConectar;
 	private JLabel lblCedula, lblPass, lblPeriodo;
-	private JTextField txtCedula, txtPass;
+	private JFormattedTextField txtCedula, txtPass;
 	private JComboBox<String> cboPeriodo;
 	private Cookies cookie;
 	
@@ -61,11 +62,9 @@ public class PanelWeb extends Panel {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (login()) {
-					JOptionPane.showMessageDialog(null, "Test");
+					JOptionPane.showMessageDialog(null, "Conexion exitosa");
 					setDocHorarioMaterias(getDocHorarioMaterias());
 					setDocMateriasPosibles(getDocMateriasPosibles());
-				} else {
-					JOptionPane.showMessageDialog(null, "Error");
 				}
 			}
 		});
@@ -124,6 +123,9 @@ public class PanelWeb extends Panel {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error: Conexión no establecida");
 			return false;
+		} catch (ElementNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Error: Datos ingresados incorrectos");
+			return false;
 		}
 		return true;
 	}
@@ -138,17 +140,17 @@ public class PanelWeb extends Panel {
 		lblCedula = new JLabel("Cedula: ");
 		lblCedula.setHorizontalTextPosition(JLabel.CENTER);
 		lblCedula.setHorizontalAlignment(JLabel.CENTER);
-
-		txtCedula = new JTextField(25);
-		txtCedula.setDocument(new JTextFieldLimit(10));
+				
+		txtCedula = new JFormattedTextField(Formateador.formatCedula());
+		txtCedula.setColumns(25);
 		txtCedula.setHorizontalAlignment(JLabel.CENTER);
 		
 		lblPass = new JLabel("Clave: ");
 		lblPass.setHorizontalTextPosition(JLabel.CENTER);
 		lblPass.setHorizontalAlignment(JLabel.CENTER);
 
-		txtPass = new JTextField(25);
-		txtPass.setDocument(new JTextFieldLimit(12));
+		txtPass = new JFormattedTextField(Formateador.formatPass());
+		txtPass.setColumns(25);
 		txtPass.setHorizontalAlignment(JLabel.CENTER);
 		
 		lblPeriodo = new JLabel("Periodo: ");

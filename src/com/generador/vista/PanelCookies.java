@@ -8,16 +8,16 @@ import java.io.IOException;
 import java.util.Observable;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.generador.modelo.Cookies;
-import com.generador.utilidad.JTextFieldLimit;
+import com.generador.utilidad.Formateador;
 
 /**
  * Clase que ofrece la vista de login por medio de Cookies
@@ -31,7 +31,7 @@ public class PanelCookies extends Panel {
 	private JPanel panelCookies;
 	private Cookies cookie;
 	private JLabel lblCookies;
-	private JTextField txtCookies;
+	private JFormattedTextField txtCookies;
 	private JButton btnAceptar;
 	
 	public PanelCookies() {
@@ -97,8 +97,8 @@ public class PanelCookies extends Panel {
 		lblCookies.setHorizontalTextPosition(JLabel.CENTER);
 		lblCookies.setHorizontalAlignment(JLabel.CENTER);
 
-		txtCookies = new JTextField(25);
-		txtCookies.setDocument(new JTextFieldLimit(24));
+		txtCookies = new JFormattedTextField(Formateador.formatCookies());
+		txtCookies.setColumns(25);
 		txtCookies.setHorizontalAlignment(JLabel.CENTER);
 
 		btnAceptar = new JButton("Aceptar");
