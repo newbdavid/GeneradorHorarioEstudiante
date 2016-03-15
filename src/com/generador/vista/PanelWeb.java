@@ -18,6 +18,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -61,11 +62,9 @@ public class PanelWeb extends Panel {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (login()) {
-					JOptionPane.showMessageDialog(null, "Test");
+					JOptionPane.showMessageDialog(null, "Conexion exitosa");
 					setDocHorarioMaterias(getDocHorarioMaterias());
 					setDocMateriasPosibles(getDocMateriasPosibles());
-				} else {
-					JOptionPane.showMessageDialog(null, "Error");
 				}
 			}
 		});
@@ -123,6 +122,9 @@ public class PanelWeb extends Panel {
 		} catch (FailingHttpStatusCodeException | IOException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error: Conexión no establecida");
+			return false;
+		} catch (ElementNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Error: Datos ingresados incorrectos");
 			return false;
 		}
 		return true;
