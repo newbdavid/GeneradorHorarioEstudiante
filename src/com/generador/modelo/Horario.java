@@ -70,8 +70,12 @@ public class Horario {
 	
 	public List<Integer> generadorHorarioDia(String horario) {
 		
+		//Caracter especial
+		int vacio = 160;
+		String caracter = ""+(char)vacio;
+		
 		List<Integer> listaHorario = null;
-		if (!horario.equals(" ")) {
+		if ((!horario.equals(" ") && (!horario.equals(caracter)))) {
 			listaHorario = new ArrayList<Integer>(2);
 			tokens = new StringTokenizer(horario, "-");
 			listaHorario.add(Integer.parseInt(tokens.nextToken().replaceAll(" ", "")));
