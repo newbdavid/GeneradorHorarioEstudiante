@@ -5,8 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,7 +36,7 @@ public class GUI {
 	
 	private Panel panelWeb, panelCookies, panelArchivosLocales;
 
-	public GUI() throws IOException, URISyntaxException {
+	public GUI() {
 
 		// Frame principal
 		JFrame gui = new JFrame();
@@ -49,13 +47,13 @@ public class GUI {
 		// Menu archivo
 		JMenu menuArchivo = new JMenu("Archivo");
 		JMenu menuLogin = new JMenu("Origen de datos");
-		JMenuItem itemWebSaew = new JMenuItem("Iniciar sesión SAEW");
+		JMenuItem itemWebSession = new JMenuItem("Iniciar sesión SAEW");
 		JMenuItem itemCookieSession = new JMenuItem("Cookies de sesión");
 		JMenuItem itemLocalFiles = new JMenuItem("Archivos locales");
 		JMenuItem itemExportar = new JMenuItem("Exportar");
 		JMenuItem itemSalir = new JMenuItem("Salir");
 		menuArchivo.add(menuLogin);
-		menuLogin.add(itemWebSaew);
+		menuLogin.add(itemWebSession);
 		menuLogin.add(itemCookieSession);
 		menuLogin.add(itemLocalFiles);
 		menuArchivo.add(itemExportar);
@@ -128,7 +126,7 @@ public class GUI {
 		gui.setVisible(true);
 
 		// Eventos
-		itemWebSaew.addActionListener(new ActionListener() {
+		itemWebSession.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -175,10 +173,10 @@ public class GUI {
 				documentos = Documentos.instancia();
 				
 				if (documentos.isValid()) {
-					Datos dat;
+					Datos datosProcesados;
 					
-					dat = new Datos(documentos.getDocMateriasPosibles(), documentos.getDocHorarioMaterias());
-					setUpTableData(dat.getMapMaterias());
+					datosProcesados = new Datos(documentos.getDocMateriasPosibles(), documentos.getDocHorarioMaterias());
+					setUpTableData(datosProcesados.getMapMaterias());
 					
 					gui.setContentPane(new JScrollPane(getTableData()));
 					gui.repaint();
