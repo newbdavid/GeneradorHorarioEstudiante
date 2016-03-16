@@ -44,11 +44,6 @@ public class Horario {
 	 */
 	public Horario(String lunes, String martes, String miercoles,
 			String jueves, String viernes, String sabado) {
-
-		/*
-		 * Debido a caraceter vacio inicial desde la fuente de datos se ve en la
-		 * necesidad de limpiar los datos de entrada
-		 */
 		
 		this.lunes = generadorHorarioDia(lunes);
 		this.martes = generadorHorarioDia(martes);
@@ -64,22 +59,39 @@ public class Horario {
 	 * @param horario Horario correspondiente a un día de una materia
 	 * @return 
 	 * Una lista que contiene los horarios
-	 * si no existe horario: null
+	 * si no existe horario retorna null
 	 * 			
 	 */
 	
 	public List<Integer> generadorHorarioDia(String horario) {
 		
+		/*
+		 * Debido a caraceter vacio inicial desde la fuente de datos se ve en la
+		 * necesidad de limpiar los datos de entrada
+		 */
+		
 		//Caracter especial
 		int vacio = 160;
-		String caracter = ""+(char)vacio;
+		String caracter = ""+(char)vacio, inicio, fin;
 		
 		List<Integer> listaHorario = null;
 		if ((!horario.equals(" ") && (!horario.equals(caracter)))) {
 			listaHorario = new ArrayList<Integer>(2);
 			tokens = new StringTokenizer(horario, "-");
-			listaHorario.add(Integer.parseInt(tokens.nextToken().replaceAll(" ", "")));
-			listaHorario.add(Integer.parseInt(tokens.nextToken().replaceAll(" ", "")));
+			
+			inicio = tokens.nextToken().trim();
+			fin = tokens.nextToken().trim(); 
+			
+			if (inicio.contains(caracter))
+				listaHorario.add(Integer.parseInt(inicio.replaceAll(caracter, "")));
+			else
+				listaHorario.add(Integer.parseInt(inicio));
+			
+			if (fin.contains(caracter))
+				listaHorario.add(Integer.parseInt(fin.replaceAll(caracter, "")));
+			else
+				listaHorario.add(Integer.parseInt(fin));
+			
 			return listaHorario;
 		} else {
 			return listaHorario;
