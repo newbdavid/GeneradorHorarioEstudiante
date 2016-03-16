@@ -115,7 +115,7 @@ public class Materia {
 	/**
 	 * Constructor de la clase Materia diseñado para el archivo MateriasPosibles
 	 * <p>
-	 * Se agrega la información de una Materia del archivo HorariosMaterias
+	 * Se agrega la información de una Materia del archivo MateriasPosibles
 	 * </p>
 	 * 
 	 * @param codigo
@@ -139,7 +139,7 @@ public class Materia {
 		this.intNumMatricula = Integer.parseInt(numMatricula);
 		this.categoria = new Categoria(categoria, subCategoria);
 
-		/**
+		/*
 		 * Se establece la prioridad según los siguientes criterios Por
 		 * categoria Por número de matrícula Por número de créditos
 		 */

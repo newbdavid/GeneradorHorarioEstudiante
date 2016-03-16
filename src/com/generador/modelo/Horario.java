@@ -1,7 +1,6 @@
 package com.generador.modelo;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -18,13 +17,14 @@ import java.util.StringTokenizer;
 
 public class Horario {
 
-	private List<Calendar> lunes = new ArrayList<Calendar>();
-	private List<Calendar> martes = new ArrayList<Calendar>();
-	private List<Calendar> miercoles = new ArrayList<Calendar>();
-	private List<Calendar> jueves = new ArrayList<Calendar>();
-	private List<Calendar> viernes = new ArrayList<Calendar>();
-	private List<Calendar> sabado = new ArrayList<Calendar>();
-
+	private List<Integer> lunes = new ArrayList<Integer>();
+	private List<Integer> martes = new ArrayList<Integer>();
+	private List<Integer> miercoles = new ArrayList<Integer>();
+	private List<Integer> jueves = new ArrayList<Integer>();
+	private List<Integer> viernes = new ArrayList<Integer>();
+	private List<Integer> sabado = new ArrayList<Integer>();
+	StringTokenizer tokens;
+	
 	/**
 	 * Constructor de la clase Horario
 	 * 
@@ -43,129 +43,64 @@ public class Horario {
 	 */
 	public Horario(String lunes, String martes, String miercoles,
 			String jueves, String viernes, String sabado) {
-
-		// TODO proceso para tomar fecha exacta
-		StringTokenizer tokens;
-
+		
+		this.lunes = generadorHorarioDia(lunes);
+		this.martes = generadorHorarioDia(martes);
+		this.miercoles = generadorHorarioDia(miercoles);
+		this.jueves = generadorHorarioDia(jueves);
+		this.viernes = generadorHorarioDia(viernes);
+		this.sabado = generadorHorarioDia(sabado);
+		
+	}
+	
+	/**
+	 * 
+	 * @param horario Horario correspondiente a un día de una materia
+	 * @return 
+	 * Una lista que contiene los horarios
+	 * si no existe horario retorna null
+	 * 			
+	 */
+	
+	public List<Integer> generadorHorarioDia(String horario) {
+		
 		/*
 		 * Debido a caraceter vacio inicial desde la fuente de datos se ve en la
 		 * necesidad de limpiar los datos de entrada
 		 */
-		if (!lunes.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(lunes, "-");
-			aux1.set(2015, 8, 31,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.lunes.add(aux1);
-			aux2.set(2015, 8, 31,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.lunes.add(aux2);
+		
+		//Caracter especial
+		int vacio = 160;
+		String caracter = ""+(char)vacio, inicio, fin;
+		
+		List<Integer> listaHorario = null;
+		if ((!horario.equals(" ") && (!horario.equals(caracter)))) {
+			listaHorario = new ArrayList<Integer>(2);
+			tokens = new StringTokenizer(horario, "-");
+			
+			inicio = tokens.nextToken().trim();
+			fin = tokens.nextToken().trim(); 
+			
+			if (inicio.contains(caracter))
+				listaHorario.add(Integer.parseInt(inicio.replaceAll(caracter, "")));
+			else
+				listaHorario.add(Integer.parseInt(inicio));
+			
+			if (fin.contains(caracter))
+				listaHorario.add(Integer.parseInt(fin.replaceAll(caracter, "")));
+			else
+				listaHorario.add(Integer.parseInt(fin));
+			
+			return listaHorario;
 		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.lunes.add(aux1);
-			this.lunes.add(aux1);
-		}
-
-		if (!martes.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(martes, "-");
-			aux1.set(2015, 8, 1,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.martes.add(aux1);
-			aux2.set(2015, 8, 1,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.martes.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.martes.add(aux1);
-			this.martes.add(aux1);
-		}
-
-		if (!miercoles.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(miercoles, "-");
-			aux1.set(2015, 8, 2,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.miercoles.add(aux1);
-			aux2.set(2015, 8, 2,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.miercoles.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.miercoles.add(aux1);
-			this.miercoles.add(aux1);
-		}
-
-		if (!jueves.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(jueves, "-");
-			aux1.set(2015, 8, 3,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")),
-					0, 0);
-			this.jueves.add(aux1);
-			aux2.set(2015, 8, 3,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")),
-					0, 0);
-			this.jueves.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.jueves.add(aux1);
-			this.jueves.add(aux1);
-		}
-
-		if (!viernes.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(viernes, "-");
-			aux1.set(2015, 9, 4,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.viernes.add(aux1);
-			aux2.set(2015, 9, 4,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.viernes.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.viernes.add(aux1);
-			this.viernes.add(aux1);
-		}
-
-		if (!sabado.equalsIgnoreCase(" ")) {
-			Calendar aux1 = Calendar.getInstance();
-			Calendar aux2 = Calendar.getInstance();
-
-			tokens = new StringTokenizer(sabado, "-");
-			aux1.set(2015, 9, 5,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.sabado.add(aux1);
-			aux2.set(2015, 9, 5,
-					Integer.parseInt(tokens.nextToken().replaceAll(" ", "")), 0);
-			this.sabado.add(aux2);
-		} else {
-			Calendar aux1 = Calendar.getInstance();
-			aux1.set(2015, 1, 1, 1, 0);
-			this.sabado.add(aux1);
-			this.sabado.add(aux1);
+			return listaHorario;
 		}
 	}
 
 	/**
 	 * @return Horario del día lunes
 	 */
-	public List<Calendar> getLunes() {
+	public List<Integer> getLunes() {
 		return lunes;
 	}
 
@@ -173,14 +108,14 @@ public class Horario {
 	 * @param lunes
 	 *            Horario del día lunes
 	 */
-	public void setLunes(List<Calendar> lunes) {
+	public void setLunes(List<Integer> lunes) {
 		this.lunes = lunes;
 	}
 
 	/**
 	 * @return Horario del día martes
 	 */
-	public List<Calendar> getMartes() {
+	public List<Integer> getMartes() {
 		return martes;
 	}
 
@@ -188,14 +123,14 @@ public class Horario {
 	 * @param martes
 	 *            Horario del día martes
 	 */
-	public void setMartes(List<Calendar> martes) {
+	public void setMartes(List<Integer> martes) {
 		this.martes = martes;
 	}
 
 	/**
 	 * @return Horario del día miercoles
 	 */
-	public List<Calendar> getMiercoles() {
+	public List<Integer> getMiercoles() {
 		return miercoles;
 	}
 
@@ -203,14 +138,14 @@ public class Horario {
 	 * @param miercoles
 	 *            Horario del día miercoles
 	 */
-	public void setMiercoles(List<Calendar> miercoles) {
+	public void setMiercoles(List<Integer> miercoles) {
 		this.miercoles = miercoles;
 	}
 
 	/**
 	 * @return Horario del día jueves
 	 */
-	public List<Calendar> getJueves() {
+	public List<Integer> getJueves() {
 		return jueves;
 	}
 
@@ -218,14 +153,14 @@ public class Horario {
 	 * @param jueves
 	 *            Horario del día jueves
 	 */
-	public void setJueves(List<Calendar> jueves) {
+	public void setJueves(List<Integer> jueves) {
 		this.jueves = jueves;
 	}
 
 	/**
 	 * @return Horario del día viernes
 	 */
-	public List<Calendar> getViernes() {
+	public List<Integer> getViernes() {
 		return viernes;
 	}
 
@@ -233,14 +168,14 @@ public class Horario {
 	 * @param viernes
 	 *            Horario del día viernes
 	 */
-	public void setViernes(List<Calendar> viernes) {
+	public void setViernes(List<Integer> viernes) {
 		this.viernes = viernes;
 	}
 
 	/**
 	 * @return Horario del día sábado
 	 */
-	public List<Calendar> getSabado() {
+	public List<Integer> getSabado() {
 		return sabado;
 	}
 
@@ -248,92 +183,94 @@ public class Horario {
 	 * @param sabado
 	 *            Horario del día sábado
 	 */
-	public void setSabado(List<Calendar> sabado) {
+	public void setSabado(List<Integer> sabado) {
 		this.sabado = sabado;
 	}
 
 	/**
-	 * Verifica si hay colision en el horario
+	 * Verifica si hay colisiones en el horario
 	 * 
 	 * @param anotherHorario
 	 *            Horario a comparar
 	 * @return Lista de Bool que indica True si colisiona o False si no
 	 */
-	public List<Boolean> choca(Horario anotherHorario) {
-		List<Boolean> choca = new ArrayList<>();
-
-		if ((this.lunes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.lunes
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.lunes.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.lunes.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.lunes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.lunes
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.lunes.get(1)
-						.get(Calendar.HOUR_OF_DAY) > anotherHorario.lunes
-						.get(1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		if ((this.martes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.martes
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.martes.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.martes.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.martes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.martes
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.martes.get(1)
-						.get(Calendar.HOUR_OF_DAY) > anotherHorario.martes.get(
-						1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		if ((this.miercoles.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.miercoles
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.miercoles.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.miercoles.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.miercoles.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.miercoles
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.miercoles
-						.get(1).get(Calendar.HOUR_OF_DAY) > anotherHorario.miercoles
-						.get(1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		if ((this.jueves.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.jueves
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.jueves.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.jueves.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.jueves.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.jueves
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.jueves.get(1)
-						.get(Calendar.HOUR_OF_DAY) > anotherHorario.jueves.get(
-						1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		if ((this.viernes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.viernes
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.viernes.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.viernes.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.viernes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.viernes
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.viernes
-						.get(1).get(Calendar.HOUR_OF_DAY) > anotherHorario.viernes
-						.get(1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		if ((this.sabado.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.sabado
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.sabado.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.sabado.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.sabado.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.sabado
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.sabado.get(1)
-						.get(Calendar.HOUR_OF_DAY) > anotherHorario.sabado.get(
-						1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		return choca;
+	
+	public List<Boolean> colisiones (Horario anotherHorario) {
+		
+		List<Boolean> colisiones = new ArrayList<>();
+		
+		colisiones.add(colision(this.getLunes(), anotherHorario.getLunes()));
+		colisiones.add(colision(this.getMartes(), anotherHorario.getMartes()));
+		colisiones.add(colision(this.getMiercoles(), anotherHorario.getMiercoles()));
+		colisiones.add(colision(this.getJueves(), anotherHorario.getJueves()));
+		colisiones.add(colision(this.getViernes(), anotherHorario.getViernes()));
+		colisiones.add(colision(this.getSabado(), anotherHorario.getSabado()));
+		
+		return colisiones;
+	}
+	
+	/**
+	 * Verifica si el horario de un día colisiona con otro horario de un día
+	 * @param horarioDia lista que contiene los horarios de un dia
+	 * @param horarioDia2 lista que contiene los horarios de un dia
+	 * @return true si existe colision si no false
+	 */
+	
+	public Boolean colision (List<Integer> horarioDia, List<Integer> horarioDia2) {
+		
+		if (horarioDia != null && horarioDia2 != null) {
+			if (
+					//Todos igual
+					(horarioDia.get(0) == horarioDia2.get(0)
+					&& horarioDia.get(1) == horarioDia2.get(1))
+					
+					||
+					
+					//Se encuentra entre: inicio
+					(horarioDia.get(0) < horarioDia2.get(0)
+					&& horarioDia.get(1) > horarioDia2.get(0))
+					
+					||
+					
+					(horarioDia.get(0) < horarioDia2.get(1)
+					&& horarioDia.get(1) > horarioDia2.get(1))
+					
+					||
+					
+					(horarioDia2.get(0) < horarioDia.get(0)
+					&& horarioDia2.get(1) > horarioDia.get(0))
+					
+					||
+					
+					(horarioDia2.get(0) < horarioDia.get(1)
+					&& horarioDia2.get(1) > horarioDia.get(1))
+					
+					||
+					
+					//Se encuentra entre: fin
+					(horarioDia.get(0) > horarioDia2.get(0)
+					&& horarioDia.get(1) < horarioDia2.get(0))
+					
+					||
+					
+					(horarioDia.get(0) > horarioDia2.get(1)
+					&& horarioDia.get(1) < horarioDia2.get(1))
+					
+					||
+					
+					(horarioDia2.get(0) > horarioDia.get(0)
+					&& horarioDia2.get(1) < horarioDia.get(0))
+					
+					||
+					
+					(horarioDia2.get(0) > horarioDia.get(1)
+					&& horarioDia2.get(1) < horarioDia.get(1))
+				)
+				return true;
+			else
+				return false;
+		} else {
+			return false;
+		}
 	}
 }
