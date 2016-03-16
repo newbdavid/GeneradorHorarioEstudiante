@@ -273,4 +273,69 @@ public class Horario {
 		 */
 		return choca;
 	}
+	
+	/**
+	 * Verifica si el horario de un día colisiona con otro horario de un día
+	 * @param horarioDia lista que contiene los horarios de un dia
+	 * @param horarioDia2 lista que contiene los horarios de un dia
+	 * @return true si existe colision si no false
+	 */
+	
+	public Boolean colision (List<Integer> horarioDia, List<Integer> horarioDia2) {
+		
+		if (horarioDia != null && horarioDia2 != null) {
+			if (
+					//Todos igual
+					(horarioDia.get(0) == horarioDia2.get(0)
+					&& horarioDia.get(1) == horarioDia2.get(1))
+					
+					||
+					
+					//Se encuentra entre: inicio
+					(horarioDia.get(0) < horarioDia2.get(0)
+					&& horarioDia.get(1) > horarioDia2.get(0))
+					
+					||
+					
+					(horarioDia.get(0) < horarioDia2.get(1)
+					&& horarioDia.get(1) > horarioDia2.get(1))
+					
+					||
+					
+					(horarioDia2.get(0) < horarioDia.get(0)
+					&& horarioDia2.get(1) > horarioDia.get(0))
+					
+					||
+					
+					(horarioDia2.get(0) < horarioDia.get(1)
+					&& horarioDia2.get(1) > horarioDia.get(1))
+					
+					||
+					
+					//Se encuentra entre: fin
+					(horarioDia.get(0) > horarioDia2.get(0)
+					&& horarioDia.get(1) < horarioDia2.get(0))
+					
+					||
+					
+					(horarioDia.get(0) > horarioDia2.get(1)
+					&& horarioDia.get(1) < horarioDia2.get(1))
+					
+					||
+					
+					(horarioDia2.get(0) > horarioDia.get(0)
+					&& horarioDia2.get(1) < horarioDia.get(0))
+					
+					||
+					
+					(horarioDia2.get(0) > horarioDia.get(1)
+					&& horarioDia2.get(1) < horarioDia.get(1))
+				)
+				return true;
+			else
+				return false;
+		} else {
+			return false;
+		}
+	}
 }
