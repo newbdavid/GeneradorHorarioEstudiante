@@ -189,89 +189,25 @@ public class Horario {
 	}
 
 	/**
-	 * Verifica si hay colision en el horario
+	 * Verifica si hay colisiones en el horario
 	 * 
 	 * @param anotherHorario
 	 *            Horario a comparar
 	 * @return Lista de Bool que indica True si colisiona o False si no
 	 */
-	public List<Boolean> choca(Horario anotherHorario) {
-		List<Boolean> choca = new ArrayList<>();
-
-		/*
-		if ((this.lunes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.lunes
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.lunes.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.lunes.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.lunes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.lunes
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.lunes.get(1)
-						.get(Calendar.HOUR_OF_DAY) > anotherHorario.lunes
-						.get(1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		if ((this.martes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.martes
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.martes.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.martes.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.martes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.martes
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.martes.get(1)
-						.get(Calendar.HOUR_OF_DAY) > anotherHorario.martes.get(
-						1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		if ((this.miercoles.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.miercoles
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.miercoles.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.miercoles.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.miercoles.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.miercoles
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.miercoles
-						.get(1).get(Calendar.HOUR_OF_DAY) > anotherHorario.miercoles
-						.get(1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		if ((this.jueves.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.jueves
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.jueves.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.jueves.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.jueves.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.jueves
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.jueves.get(1)
-						.get(Calendar.HOUR_OF_DAY) > anotherHorario.jueves.get(
-						1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		if ((this.viernes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.viernes
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.viernes.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.viernes.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.viernes.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.viernes
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.viernes
-						.get(1).get(Calendar.HOUR_OF_DAY) > anotherHorario.viernes
-						.get(1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-
-		if ((this.sabado.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.sabado
-				.get(0).get(Calendar.HOUR_OF_DAY) && this.sabado.get(1).get(
-				Calendar.HOUR_OF_DAY) > anotherHorario.sabado.get(0).get(
-				Calendar.HOUR_OF_DAY))
-				|| (this.sabado.get(0).get(Calendar.HOUR_OF_DAY) <= anotherHorario.sabado
-						.get(1).get(Calendar.HOUR_OF_DAY) && this.sabado.get(1)
-						.get(Calendar.HOUR_OF_DAY) > anotherHorario.sabado.get(
-						1).get(Calendar.HOUR_OF_DAY)))
-			choca.add(true);
-		else
-			choca.add(false);
-		 */
-		return choca;
+	
+	public List<Boolean> colisiones (Horario anotherHorario) {
+		
+		List<Boolean> colisiones = new ArrayList<>();
+		
+		colisiones.add(colision(this.getLunes(), anotherHorario.getLunes()));
+		colisiones.add(colision(this.getMartes(), anotherHorario.getMartes()));
+		colisiones.add(colision(this.getMiercoles(), anotherHorario.getMiercoles()));
+		colisiones.add(colision(this.getJueves(), anotherHorario.getJueves()));
+		colisiones.add(colision(this.getViernes(), anotherHorario.getViernes()));
+		colisiones.add(colision(this.getSabado(), anotherHorario.getSabado()));
+		
+		return colisiones;
 	}
 	
 	/**
