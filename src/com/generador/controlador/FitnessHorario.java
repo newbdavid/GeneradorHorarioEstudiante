@@ -12,11 +12,13 @@ public class FitnessHorario extends FitnessFunction {
 
 	private List<Materia> listaMaterias;
 	private List<Materia> auxOptimoMaterias;
+	private List<Integer> listaSeleccionado;
 	private int maxCreditos;
 	
-	public FitnessHorario(List<Materia> listaMaterias, int maxCreditos) {
+	public FitnessHorario(List<Materia> listaMaterias, int maxCreditos, List<Integer> listaSeleccionado) {
 		this.listaMaterias = listaMaterias;
 		this.maxCreditos = maxCreditos;
+		this.listaSeleccionado = listaSeleccionado;
 	}
 	
 	@Override
@@ -46,6 +48,11 @@ public class FitnessHorario extends FitnessFunction {
 				
 				//Materias obligatorias
 				if (listaMaterias.get(i).getCategoria().getStrSubCategoria().equals("OBLIGATORIAS")){
+					valor += 100;
+				}
+				
+				//Lista seleccionado
+				if (listaSeleccionado.contains(i)) {
 					valor += 100;
 				}
 				
