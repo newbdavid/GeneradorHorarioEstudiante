@@ -14,7 +14,7 @@ import org.jgap.impl.BooleanGene;
 import org.jgap.impl.DefaultConfiguration;
 
 import com.generador.modelo.Materia;
-import com.generador.utilidad.MultiMapa;
+import com.generador.utilidad.MultiMapaMaterias;
 
 /**
  * Clase encargada de la optimización del horario
@@ -26,15 +26,16 @@ import com.generador.utilidad.MultiMapa;
 public class Organizador {
 
 	private List<Materia> listaMaterias;
-	private List<List<Materia>> soluciones;
+	private List<List<Materia>> listaSoluciones;
 	private List<IChromosome> listaCromosomas;
-	private int numeroMaterias;
+	private int numeroMateriasDisponibles;
+	private int numeroMateriasObligatorias;
 	
-
-	public Organizador(MultiMapa mapMaterias) {
+	public Organizador(MultiMapaMaterias mapMaterias) {
 		this.listaMaterias = mapMaterias.getAllMaterias();
-		this.numeroMaterias = this.listaMaterias.size();
-		this.soluciones = new ArrayList<List<Materia>>(5);
+		this.numeroMateriasDisponibles = this.listaMaterias.size();
+		this.numeroMateriasObligatorias = mapMaterias.getCantidadObligatorias() - 1;
+		this.listaSoluciones = new ArrayList<List<Materia>>(5);
 		this.listaCromosomas = new ArrayList<IChromosome>();
 	}
 
@@ -46,15 +47,16 @@ public class Organizador {
 		//Almacenar mejor cada generacion
 		config.setPreservFittestIndividual(true);
 
+		//Constructor fitness
 		FitnessFunction fitness = new FitnessHorario(listaMaterias);
+		
 		try {
 			//Configurar fitness
 			config.setFitnessFunction(fitness);
 
 			//Gen de ejemplo
-
-			Gene[] genHorario = new Gene[numeroMaterias];
-			for (int i = 0; i < numeroMaterias; i++) {
+			Gene[] genHorario = new Gene[numeroMateriasDisponibles];
+			for (int i = 0; i < numeroMateriasDisponibles; i++) {
 				genHorario[i] = new BooleanGene(config,false);	
 			}
 
@@ -67,15 +69,18 @@ public class Organizador {
 
 			IChromosome cromosomaOptimo;
 
+			System.out.println("obligatorias:" +numeroMateriasObligatorias);
 			//Evolucion
 			for (int i = 0; i < 2500; i++) {
 				poblacion.evolve();
 				cromosomaOptimo = poblacion.getFittestChromosome();
-				if (cromosomaOptimo.getFitnessValue() > 700 && !listaCromosomas.contains(cromosomaOptimo))
+				
+				if (cromosomaOptimo.getFitnessValue() >= numeroMateriasObligatorias *100 
+						&& !listaCromosomas.contains(cromosomaOptimo))
 				{
 					listaCromosomas.add(cromosomaOptimo);
 					System.out.println(cromosomaOptimo.toString());
-					soluciones.add(resultado(cromosomaOptimo));
+					listaSoluciones.add(resultado(cromosomaOptimo));
 				}
 			}	
 		} catch (InvalidConfigurationException e) {
@@ -83,7 +88,7 @@ public class Organizador {
 			e.printStackTrace();
 		}
 
-		System.out.println("Soluciones obtenidas: "+soluciones.size());
+		System.out.println("Soluciones obtenidas: "+listaSoluciones.size());
 	}
 
 	public String infoMateria (int indice) {
@@ -94,7 +99,7 @@ public class Organizador {
 
 		List<Materia> solucion = new ArrayList<Materia>(8);
 
-		for (int i = 0; i < numeroMaterias; i++) {
+		for (int i = 0; i < numeroMateriasDisponibles; i++) {
 			if ((boolean) cromosomaOptimo.getGene(i).getAllele()){
 				solucion.add(listaMaterias.get(i));
 			}
@@ -103,7 +108,7 @@ public class Organizador {
 		Integer creditos = 0;
 		System.out.println("valor:"+cromosomaOptimo.getFitnessValue());
 		
-		for (int i = 0; i < numeroMaterias; i++) {
+		for (int i = 0; i < numeroMateriasDisponibles; i++) {
 			if ((boolean) cromosomaOptimo.getGene(i).getAllele()) {
 				System.out.println(infoMateria(i));
 				creditos += listaMaterias.get(i).getIntCreditos();
