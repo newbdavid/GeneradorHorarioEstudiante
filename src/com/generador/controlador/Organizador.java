@@ -60,7 +60,7 @@ public class Organizador {
 			poblacion = Genotype.randomInitialGenotype(config);
 			
 			//Evolucion
-			for (int i = 0; i < 1000; i++) {
+			for (int i = 0; i < 2000; i++) {
 				poblacion.evolve();	
 			}
 			
