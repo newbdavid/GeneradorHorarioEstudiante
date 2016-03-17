@@ -3,12 +3,10 @@ package com.generador.controlador;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.bcel.generic.RETURN;
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 
 import com.generador.modelo.Materia;
-import com.generador.utilidad.MultiMapa;
 
 public class FitnessHorario extends FitnessFunction {
 
@@ -20,15 +18,15 @@ public class FitnessHorario extends FitnessFunction {
 	}
 	
 	@Override
-	protected double evaluate(IChromosome arg0) {
+	protected double evaluate(IChromosome cromosoma) {
 		Double valor = 0.0;
 		Integer creditos = 0;
 		Integer restriccion = 1;
 		auxOptimoMaterias = new ArrayList<Materia>();
-		for (int i = 0; i < arg0.size(); i++) {
+		for (int i = 0; i < cromosoma.size(); i++) {
 			
 			//Se considera si es verdadero
-			if ((Boolean)arg0.getGene(i).getAllele()) {
+			if ((Boolean)cromosoma.getGene(i).getAllele()) {
 				
 				//Restriccion repeticion
 				if (isRepetido(listaMaterias.get(i))) {
