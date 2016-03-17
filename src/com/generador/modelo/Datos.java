@@ -7,7 +7,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.generador.utilidad.MultiMapa;
+import com.generador.utilidad.MultiMapaMaterias;
 
 /**
  * Clase encargada de almacenar los datos de entrada en un multimapa
@@ -22,7 +22,7 @@ public class Datos {
 
 	private Document docMateriasPosibles;
 	private Document docHorarioMaterias;
-	private MultiMapa mapMaterias;
+	private MultiMapaMaterias mapMaterias;
 	private List<String> strMaterias = new ArrayList<String>();
 
 	/**
@@ -52,7 +52,7 @@ public class Datos {
 				.children();
 
 		// Almacenamiento Materias Posibles
-		MultiMapa mapTablaMateriasPosibles = new MultiMapa();
+		MultiMapaMaterias mapTablaMateriasPosibles = new MultiMapaMaterias();
 		for (int i = 1; i < tablaMateriasPosibles.size() - 1; i++) {
 			materia = tablaMateriasPosibles.get(i);
 			infoMateria = materia.children();
@@ -108,7 +108,7 @@ public class Datos {
 	/**
 	 * @return retorna el multimapa con todas las materias.
 	 */
-	public MultiMapa getMapMaterias() {
+	public MultiMapaMaterias getMapMaterias() {
 		return mapMaterias;
 	}
 
@@ -117,7 +117,7 @@ public class Datos {
 	 *            Multimapa de la clase Materia
 	 */
 
-	public void setMapMaterias(MultiMapa mapMaterias) {
+	public void setMapMaterias(MultiMapaMaterias mapMaterias) {
 		this.mapMaterias = mapMaterias;
 	}
 
