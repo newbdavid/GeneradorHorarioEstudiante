@@ -30,13 +30,17 @@ public class Organizador {
 	private List<IChromosome> listaCromosomas;
 	private int numeroMateriasDisponibles;
 	private int numeroMateriasObligatorias;
+	private int maxCreditos;
 	
-	public Organizador(MultiMapaMaterias mapMaterias) {
+	public Organizador(MultiMapaMaterias mapMaterias, int maxCreditos) {
 		this.listaMaterias = mapMaterias.getAllMaterias();
-		this.numeroMateriasDisponibles = this.listaMaterias.size();
-		this.numeroMateriasObligatorias = mapMaterias.getCantidadObligatorias() - 1;
 		this.listaSoluciones = new ArrayList<List<Materia>>(5);
 		this.listaCromosomas = new ArrayList<IChromosome>();
+		
+		this.numeroMateriasDisponibles = this.listaMaterias.size();
+		this.numeroMateriasObligatorias = mapMaterias.getCantidadObligatorias() - 1;
+		this.maxCreditos = maxCreditos;
+		
 	}
 
 	public void calcularHorarioOptimo () {
@@ -48,7 +52,7 @@ public class Organizador {
 		config.setPreservFittestIndividual(true);
 
 		//Constructor fitness
-		FitnessFunction fitness = new FitnessHorario(listaMaterias);
+		FitnessFunction fitness = new FitnessHorario(listaMaterias, maxCreditos);
 		
 		try {
 			//Configurar fitness
@@ -69,7 +73,6 @@ public class Organizador {
 
 			IChromosome cromosomaOptimo;
 
-			System.out.println("obligatorias:" +numeroMateriasObligatorias);
 			//Evolucion
 			for (int i = 0; i < 2500; i++) {
 				poblacion.evolve();
