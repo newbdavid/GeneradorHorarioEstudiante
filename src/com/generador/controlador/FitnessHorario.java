@@ -30,7 +30,13 @@ public class FitnessHorario extends FitnessFunction {
 			//Se considera si es verdadero
 			if ((Boolean)arg0.getGene(i).getAllele()) {
 				
-				if (isRepetido(listaMaterias.get(i))){
+				//Restriccion repeticion
+				if (isRepetido(listaMaterias.get(i))) {
+					restriccion = 0;
+				}
+			
+				//Restriccion cruze horarios
+				if (isCruceHorario(listaMaterias.get(i))) {
 					restriccion = 0;
 				}
 				
@@ -39,8 +45,8 @@ public class FitnessHorario extends FitnessFunction {
 				creditos += listaMaterias.get(i).getIntCreditos();
 				
 				//Materias obligatorias
-				if (listaMaterias.get(i).getCategoria().getStrCategoria().equals("OBLIGATORIAS")){
-					valor += 1000;
+				if (listaMaterias.get(i).getCategoria().getStrSubCategoria().equals("OBLIGATORIAS")){
+					valor += 100;
 				}
 				
 				//Restriccion creditos
@@ -56,6 +62,15 @@ public class FitnessHorario extends FitnessFunction {
 		
 		for (int i = 0; i < auxOptimoMaterias.size(); i++) {
 			if (auxOptimoMaterias.get(i).getStrCodigo().equals(materia.getStrCodigo()))
+					return true;
+		}
+		return false;
+	}
+	
+	protected Boolean isCruceHorario (Materia materia) {
+		
+		for (int i = 0; i < auxOptimoMaterias.size(); i++) {
+			if (auxOptimoMaterias.get(i).getHorario().colisiones(materia.getHorario()).contains(true))
 					return true;
 		}
 		return false;
