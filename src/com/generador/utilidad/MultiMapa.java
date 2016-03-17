@@ -29,5 +29,4 @@ public class MultiMapa extends LinkedHashMap<String, List<Materia>> {
 		
 		return listaMaterias;
 	}
-	
 }
