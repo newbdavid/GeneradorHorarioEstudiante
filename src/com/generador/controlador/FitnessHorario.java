@@ -12,9 +12,11 @@ public class FitnessHorario extends FitnessFunction {
 
 	private List<Materia> listaMaterias;
 	private List<Materia> auxOptimoMaterias;
+	private int maxCreditos;
 	
-	public FitnessHorario(List<Materia> listaMaterias) {
+	public FitnessHorario(List<Materia> listaMaterias, int maxCreditos) {
 		this.listaMaterias = listaMaterias;
+		this.maxCreditos = maxCreditos;
 	}
 	
 	@Override
@@ -30,12 +32,12 @@ public class FitnessHorario extends FitnessFunction {
 				
 				//Restriccion repeticion
 				if (isRepetido(listaMaterias.get(i))) {
-					restriccion = 0;
+					return 0.0;
 				}
 			
 				//Restriccion cruze horarios
 				if (isCruceHorario(listaMaterias.get(i))) {
-					restriccion = 0;
+					return 0.0;
 				}
 				
 				auxOptimoMaterias.add(listaMaterias.get(i));
@@ -48,8 +50,8 @@ public class FitnessHorario extends FitnessFunction {
 				}
 				
 				//Restriccion creditos
-				if (creditos > 30) {
-					restriccion = 0;
+				if (creditos > maxCreditos) {
+					return 0.0;
 				}
 			}
 		}
