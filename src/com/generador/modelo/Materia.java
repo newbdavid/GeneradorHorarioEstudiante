@@ -1,5 +1,7 @@
 package com.generador.modelo;
 
+import java.util.StringTokenizer;
+
 /**
  * Clase que representa las materias
  * <p>
@@ -135,7 +137,8 @@ public class Materia {
 			String numMatricula, String categoria, String subCategoria) {
 		this.strCodigo = codigo;
 		this.strNombre = nombre;
-		this.intCreditos = Integer.parseInt(creditos.substring(0, 1));
+		StringTokenizer tokens = new StringTokenizer(creditos, ","); 
+		this.intCreditos = Integer.parseInt(tokens.nextToken());
 		this.intNumMatricula = Integer.parseInt(numMatricula);
 		this.categoria = new Categoria(categoria, subCategoria);
 
@@ -310,4 +313,14 @@ public class Materia {
 				getIntPrioridad() };
 		return infoMateria;
 	}
+
+	@Override
+	public String toString() {
+		return "Materia [strCodigo=" + strCodigo + ", strNombre=" + strNombre + ", strParalelo=" + strParalelo
+				+ ", strAula=" + strAula + ", horario=" + horario + ", intCreditos=" + intCreditos
+				+ ", intNumMatricula=" + intNumMatricula + ", categoria=" + categoria + ", intPrioridad=" + intPrioridad
+				+ "]";
+	}
+	
+	
 }
