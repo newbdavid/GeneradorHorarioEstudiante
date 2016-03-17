@@ -28,19 +28,19 @@ public class Organizador {
 	private List<Materia> listaMaterias;
 	private List<List<Materia>> listaSoluciones;
 	private List<IChromosome> listaCromosomas;
+	private List<Integer> listaSeleccionado;
 	private int numeroMateriasDisponibles;
 	private int numeroMateriasObligatorias;
 	private int maxCreditos;
 	
-	public Organizador(MultiMapaMaterias mapMaterias, int maxCreditos) {
+	public Organizador(MultiMapaMaterias mapMaterias, int maxCreditos, List<Integer> listaSeleccionado) {
 		this.listaMaterias = mapMaterias.getAllMaterias();
 		this.listaSoluciones = new ArrayList<List<Materia>>(5);
 		this.listaCromosomas = new ArrayList<IChromosome>();
-		
+		this.listaSeleccionado = listaSeleccionado;
 		this.numeroMateriasDisponibles = this.listaMaterias.size();
 		this.numeroMateriasObligatorias = mapMaterias.getCantidadObligatorias() - 1;
 		this.maxCreditos = maxCreditos;
-		
 	}
 
 	public void calcularHorarioOptimo () {
@@ -52,7 +52,9 @@ public class Organizador {
 		config.setPreservFittestIndividual(true);
 
 		//Constructor fitness
-		FitnessFunction fitness = new FitnessHorario(listaMaterias, maxCreditos);
+		FitnessFunction fitness = new FitnessHorario(listaMaterias, maxCreditos, listaSeleccionado);
+		
+		int fitnessEsperado = numeroMateriasObligatorias * 100 + listaSeleccionado.size() * 100;
 		
 		try {
 			//Configurar fitness
@@ -78,7 +80,7 @@ public class Organizador {
 				poblacion.evolve();
 				cromosomaOptimo = poblacion.getFittestChromosome();
 				
-				if (cromosomaOptimo.getFitnessValue() >= numeroMateriasObligatorias *100 
+				if (cromosomaOptimo.getFitnessValue() >= fitnessEsperado 
 						&& !listaCromosomas.contains(cromosomaOptimo))
 				{
 					listaCromosomas.add(cromosomaOptimo);
