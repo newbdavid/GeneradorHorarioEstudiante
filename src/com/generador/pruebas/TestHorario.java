@@ -137,4 +137,18 @@ public class TestHorario {
 
 		assertEquals(listaChoque, listaResultado);
 	}
+	
+	@Test
+	public void getHorarios(){
+		List<List<Integer>> horarios = new ArrayList<List<Integer>>();
+		
+		horarios.add(horario1.getLunes());
+		horarios.add(horario1.getMartes());
+		horarios.add(horario1.getMiercoles());
+		horarios.add(horario1.getJueves());
+		horarios.add(horario1.getViernes());
+		horarios.add(horario1.getSabado());
+		
+		assertEquals(6, horarios.size());
+	}
 }
