@@ -318,7 +318,8 @@ public class Materia {
 	public String toString() {
 		return "Materia [strCodigo=" + strCodigo + ", strNombre=" + strNombre + ", strParalelo=" + strParalelo
 				+ ", strAula=" + strAula + ", horario=" + horario + ", intCreditos=" + intCreditos
-				+ ", intNumMatricula=" + intNumMatricula + ", categoria=" + categoria + ", intPrioridad=" + intPrioridad
+				+ ", intNumMatricula=" + intNumMatricula + ", categoria=" + categoria.getStrCategoria() 
+				+ ", subCategoria=" + categoria.getStrSubCategoria() + ", intPrioridad=" + intPrioridad
 				+ "]";
 	}
 	
