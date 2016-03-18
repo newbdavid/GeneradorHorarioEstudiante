@@ -13,10 +13,12 @@ public class FitnessHorario extends FitnessFunction {
 	private List<Materia> listaMaterias;
 	private List<Materia> auxOptimoMaterias;
 	private List<Integer> listaSeleccionado;
+	private int minCreditos;
 	private int maxCreditos;
 	
-	public FitnessHorario(List<Materia> listaMaterias, int maxCreditos, List<Integer> listaSeleccionado) {
+	public FitnessHorario(List<Materia> listaMaterias, int minCreditos, int maxCreditos, List<Integer> listaSeleccionado) {
 		this.listaMaterias = listaMaterias;
+		this.minCreditos = minCreditos;
 		this.maxCreditos = maxCreditos;
 		this.listaSeleccionado = listaSeleccionado;
 	}
@@ -27,41 +29,43 @@ public class FitnessHorario extends FitnessFunction {
 		Integer creditos = 0;
 		Integer restriccion = 1;
 		auxOptimoMaterias = new ArrayList<Materia>();
+		
 		for (int i = 0; i < cromosoma.size(); i++) {
 			
 			//Se considera si es verdadero
 			if ((Boolean)cromosoma.getGene(i).getAllele()) {
 				
 				//Restriccion repeticion
-				if (isRepetido(listaMaterias.get(i))) {
+				if (isRepetido(listaMaterias.get(i)))
 					return 0.0;
-				}
 			
 				//Restriccion cruze horarios
-				if (isCruceHorario(listaMaterias.get(i))) {
+				if (isCruceHorario(listaMaterias.get(i)))
 					return 0.0;
-				}
 				
 				auxOptimoMaterias.add(listaMaterias.get(i));
 				valor += listaMaterias.get(i).getIntPrioridad();
 				creditos += listaMaterias.get(i).getIntCreditos();
 				
 				//Materias obligatorias
-				if (listaMaterias.get(i).getCategoria().getStrSubCategoria().equals("OBLIGATORIAS")){
-					valor += 100;
-				}
+				if (listaMaterias.get(i).getCategoria().getStrCategoria().equals("FORMACION PROFESIONAL")
+						&& listaMaterias.get(i).getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
+					valor += 10;
 				
 				//Lista seleccionado
-				if (listaSeleccionado.contains(i)) {
+				if (listaSeleccionado.contains(i))
 					valor += 100;
-				}
 				
-				//Restriccion creditos
-				if (creditos > maxCreditos) {
+				//Restriccion max creditos
+				if (creditos > maxCreditos)
 					return 0.0;
-				}
 			}
 		}
+				
+		//Restriccion min creditos
+		if (creditos < minCreditos)
+			return 0.0;
+		
 		return valor * restriccion;	
 	}
 	
