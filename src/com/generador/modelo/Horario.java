@@ -1,5 +1,7 @@
 package com.generador.modelo;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -272,5 +274,23 @@ public class Horario {
 		} else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Toma todos los horarios de todos los días
+	 * @return Arreglo con todos horarios
+	 */
+	
+	public List<List<Integer>> getHorarios(){
+		List<List<Integer>> horarios = new ArrayList<List<Integer>>();
+		
+		horarios.add(this.getLunes());
+		horarios.add(this.getMartes());
+		horarios.add(this.getMiercoles());
+		horarios.add(this.getJueves());
+		horarios.add(this.getViernes());
+		horarios.add(this.getSabado());
+		
+		return horarios;
 	}
 }
