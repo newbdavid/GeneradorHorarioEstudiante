@@ -1,7 +1,5 @@
 package com.generador.modelo;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -303,7 +301,4 @@ public class Horario {
 				+ (viernes != null ? "viernes=" + viernes + ", " : "") + (sabado != null ? "sabado=" + sabado : "")
 				+ "]";
 	}
-	
-	
-	
 }
