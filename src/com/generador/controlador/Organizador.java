@@ -3,6 +3,7 @@ package com.generador.controlador;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.xalan.xsltc.compiler.sym;
 import org.jgap.Chromosome;
 import org.jgap.Configuration;
 import org.jgap.FitnessFunction;
@@ -84,43 +85,32 @@ public class Organizador {
 						&& !listaCromosomas.contains(cromosomaOptimo))
 				{
 					listaCromosomas.add(cromosomaOptimo);
-					System.out.println(cromosomaOptimo.toString());
 					listaSoluciones.add(resultado(cromosomaOptimo));
 				}
 			}	
 		} catch (InvalidConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		System.out.println("Soluciones obtenidas: "+listaSoluciones.size());
-	}
-
-	public String infoMateria (int indice) {
-		return listaMaterias.get(indice).toString();
 	}
 
 	public List<Materia> resultado (IChromosome cromosomaOptimo) {
 
+		System.out.println();
+		
 		List<Materia> solucion = new ArrayList<Materia>(8);
-
 		for (int i = 0; i < numeroMateriasDisponibles; i++) {
 			if ((boolean) cromosomaOptimo.getGene(i).getAllele()){
-				solucion.add(listaMaterias.get(i));
+				System.out.println(listaMaterias.get(i).toString());
 			}
 		}
-
-		Integer creditos = 0;
-		System.out.println("valor:"+cromosomaOptimo.getFitnessValue());
-		
-		for (int i = 0; i < numeroMateriasDisponibles; i++) {
-			if ((boolean) cromosomaOptimo.getGene(i).getAllele()) {
-				System.out.println(infoMateria(i));
-				creditos += listaMaterias.get(i).getIntCreditos();
-			}
-		}
-		
-		System.out.println("creditos total: "+creditos);
 		return solucion;
+	}
+
+	public List<List<Materia>> getListaSoluciones() {
+		return listaSoluciones;
+	}
+
+	public void setListaSoluciones(List<List<Materia>> listaSoluciones) {
+		this.listaSoluciones = listaSoluciones;
 	}
 }
