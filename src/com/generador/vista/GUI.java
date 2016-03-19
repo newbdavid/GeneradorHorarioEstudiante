@@ -38,6 +38,7 @@ public class GUI {
 	private String strPathHorarios = "";
 	
 	private Panel panelWeb, panelCookies, panelArchivosLocales;
+	private PanelConfiguracion panelTodosHorarios;
 	private Organizador organizador;
 	private Datos datosProcesados;
 
@@ -66,7 +67,7 @@ public class GUI {
 
 		// Menu Planificador
 		JMenu menuPlanificador = new JMenu("Planificador");
-		JMenuItem itemPlanTodos = new JMenuItem("Todos horarios");
+		JMenuItem itemPlanTodos = new JMenuItem("Configuración");
 		JMenuItem itemPlanOrganizador = new JMenuItem("Organizador");
 		menuPlanificador.add(itemPlanTodos);
 		menuPlanificador.add(itemPlanOrganizador);
@@ -108,16 +109,6 @@ public class GUI {
 		
 		// TODO JPanel Exportar
 		itemExportar.setEnabled(false);
-
-		// JPanel todos los horarios
-		JPanel panelTodosHorarios = new JPanel();
-		panelTodosHorarios.setLayout(new BorderLayout());
-		panelTodosHorarios.setSize(500, 480);
-
-		JLabel labelTabla = new JLabel("Materias disponibles");
-		panelTodosHorarios.add(labelTabla, BorderLayout.NORTH);
-		panelTodosHorarios.add(new JScrollPane(this.tblTodosHorarios),
-				BorderLayout.CENTER);
 
 		// TODO JPanel Organizador
 		JPanel panelOptimo = new JPanel();
@@ -186,13 +177,19 @@ public class GUI {
 				
 				if (documentos.isValid()) {
 					
-					System.out.println("see");
 					datosProcesados = new Datos(documentos.getDocMateriasPosibles(), documentos.getDocHorarioMaterias());
-					System.out.println("see2");
-					System.out.println(datosProcesados.getMapMaterias().size());
-					fillTblTodosHorarios(datosProcesados.getMapMaterias().getAllMaterias());
 					
-					gui.setContentPane(new JScrollPane(tblTodosHorarios));
+					if (panelTodosHorarios != null) {
+						int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea volver a configurar el organizador?\n"
+								+ "Nota: Se perdera toda la configuración anterior"
+			        			, "Confirmación", JOptionPane.YES_NO_OPTION);
+			        	 if (respuesta == JOptionPane.YES_OPTION) {
+			        		 panelTodosHorarios = new PanelConfiguracion(datosProcesados.getMapMaterias().getAllMaterias());
+			        	 }
+					} else {
+						panelTodosHorarios = new PanelConfiguracion(datosProcesados.getMapMaterias().getAllMaterias());
+					}
+					gui.setContentPane(panelTodosHorarios.getPanelConfiguracion());
 					gui.repaint();
 					gui.setVisible(true);
 				}
@@ -275,23 +272,6 @@ public class GUI {
 	// Llenado de tabla
 	public JTable getTableData() {
 		return this.tblTodosHorarios;
-	}
-
-	public void fillTblTodosHorarios(List<Materia> listaMaterias) {
-		String[] colName = { "Codigo", "Nombre", "Paralelo", "Aula", "Horario",
-				"Creditos", "Num Matricua", "Categoria", "Prioridad" };
-		DefaultTableModel tableModel = new DefaultTableModel();
-		tableModel.setColumnIdentifiers(colName);
-		tblTodosHorarios = new JTable(tableModel);
-
-		Object[] datos = new String[9];
-		for (Materia materia : listaMaterias) {
-			System.out.println(materia.getInfoMateria().toString());
-			datos = materia.getInfoMateria();
-			tableModel.addRow(datos);
-		}
-		
-		tblTodosHorarios.setModel(tableModel);
 	}
 	
 	public void fillTblOptimo(List<List<Materia>> listaSoluciones) {
