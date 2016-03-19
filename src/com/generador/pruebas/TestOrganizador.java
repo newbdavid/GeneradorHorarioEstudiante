@@ -2,51 +2,107 @@ package com.generador.pruebas;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.xpath.operations.Bool;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.gargoylesoftware.htmlunit.javascript.host.Iterator;
+import com.generador.controlador.Organizador;
 import com.generador.modelo.Datos;
 import com.generador.modelo.Materia;
-import com.generador.utilidad.MultiMapa;
+import com.generador.utilidad.MultiMapaMaterias;
 
 public class TestOrganizador {
 
-	private MultiMapa mapMaterias;
-	private LinkedHashMap<String, Materia> listaOptimo;
-	
+	private MultiMapaMaterias mapMaterias;
+	private Organizador organizador;
+	private List<List<Materia>> listaResultados;
+	private List<Materia> listaResultado;
+	private List<Integer> listaMateriasSeleccionadas;
+	private int maxCreditos, minCreditos;
+
 	public TestOrganizador() {
+		listaMateriasSeleccionadas = new ArrayList<Integer>(1);
+		listaMateriasSeleccionadas.add(18);
+		maxCreditos = 30;
+		minCreditos = 20;
+		
 		Datos datosProcesados = new Datos(documento("Materias Posibles"), documento("Horarios"));
 		this.mapMaterias = datosProcesados.getMapMaterias();
 		
-		this.listaOptimo = new LinkedHashMap<String,Materia>();
-		listaOptimo.put("SIC514",mapMaterias.get("SIC514").get(0));
+		imprimir();
+		this.organizador = new Organizador(mapMaterias , minCreditos ,maxCreditos, listaMateriasSeleccionadas);
+		optimo();
+		this.listaResultados = organizador.getListaSoluciones();
+	}
+
+	//@Test
+	public void testMateriaSeleccionada() {
+		
+		ArrayList<Boolean> contenido = new ArrayList<Boolean>(2);
+		
+		if (listaResultados != null && listaMateriasSeleccionadas.size() > 0) {
+			
+			for (List<Materia> materias : listaResultados) {
+				for (Integer i : listaMateriasSeleccionadas) {
+					contenido.add(materias.contains(mapMaterias.getAllMaterias().get(i)));
+				}
+			}
+			
+			assertTrue(!contenido.contains(false));				
+			
+		} else {
+			assertNull(listaResultado);
+		}	
 	}
 
 	@Test
-	public void test() {
-		imprimir();
-		assertTrue(verificar());
+	public void testNumeroCreditos() {
+		ArrayList<Boolean> contenido = new ArrayList<Boolean>(2);
+		int creditos = 0;
+		
+		if (listaResultados.size() > 0) {
+			
+			for (List<Materia> materias : listaResultados) {
+				creditos = 0;
+				
+				for (Materia materia : materias)
+					creditos += materia.getIntCreditos();
+				
+				System.out.println("creditos: "+creditos);
+
+				if (creditos > maxCreditos || creditos < minCreditos)
+					contenido.add(true);
+			}
+			
+			assertTrue(!contenido.contains(true));				
+			
+		} else {
+			assertTrue(true);
+		}
+		
 	}
 	
+	public void imprimir() {
+		for (int i = 0; i < mapMaterias.getAllMaterias().size(); i++) {
+			System.out.println(i+" "+mapMaterias.getAllMaterias().get(i).toString());
+		}
+	}
+	
+	public void optimo() {
+		organizador.calcularHorarioOptimo();
+		System.out.println("Soluciones: "+organizador.getListaSoluciones().size());
+		System.out.println();
+	}
+
 	public Document documento(String nombreArchivo) {
-		
+
 		File input = new File("./"+nombreArchivo+".html");
-		
 		try {
 			Document doc = Jsoup.parse(input, "UTF-8");
 			return doc;
@@ -56,27 +112,4 @@ public class TestOrganizador {
 		}
 		return null;
 	}
-	
-	public Boolean verificar () {
-		return listaOptimo.containsKey("SIC514");
-	}
-	
-	public void imprimir() {
-
-		Object[] keys;
-		keys =  mapMaterias.keySet().toArray();
-		
-		for (Object key : keys) {
-			System.out.println(mapMaterias.get(key).size());
-			
-			for (int i = 0; i < mapMaterias.get(key).size(); i++) {
-				System.out.println(mapMaterias.get(key).get(i).getStrNombre());
-				System.out.println(mapMaterias.get(key).get(i).getHorario().toString());
-				System.out.println(mapMaterias.get(key).get(i).getHorario().getLunes());
-			}
-			System.out.println(key);
-			System.out.println();
-		}
-	}
-
 }
