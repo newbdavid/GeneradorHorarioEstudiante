@@ -9,9 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -40,6 +37,9 @@ public class PanelConfiguracion {
 		panelConfiguracion = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 		setContenido(listaMaterias);
 		this.listaMaterias = listaMaterias;
+		this.listaSeleccionado = new ArrayList<Integer>(1);
+		this.minCreditos = (int) spMinCreditos.getValue();
+		this.maxCreditos = (int) spMaxCreditos.getValue();
 
 		//Eventos
 		tblTodosHorarios.addMouseListener(new MouseAdapter() {
@@ -64,7 +64,7 @@ public class PanelConfiguracion {
 				minCreditos = (int) spMinCreditos.getValue();
 				maxCreditos = (int) spMaxCreditos.getValue();
 
-				listaSeleccionado = new ArrayList<Integer>(2);
+				listaSeleccionado = new ArrayList<Integer>(1);
 				for (int i = 0; i < listaMaterias.size(); i++) {
 					if ((boolean)tblTodosHorarios.getModel().getValueAt(i
 							,tblTodosHorarios.getColumn("Obligatorio").getModelIndex()))
