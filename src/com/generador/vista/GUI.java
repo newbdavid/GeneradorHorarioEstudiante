@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,8 +20,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.generador.controlador.Documentos;
+import com.generador.controlador.Organizador;
 import com.generador.modelo.Datos;
-import com.generador.utilidad.MultiMapa;
+import com.generador.modelo.Materia;
 
 /**
  * Clase encargada de desplegar la información en interfaz gráfica
@@ -30,11 +33,13 @@ import com.generador.utilidad.MultiMapa;
 public class GUI {
 
 	private String strCookie = "";
-	private JTable tabla;
+	private JTable tblTodosHorarios, tblOptimos;
 	private String strPathMateriasPosibles = "";
 	private String strPathHorarios = "";
 	
 	private Panel panelWeb, panelCookies, panelArchivosLocales;
+	private Organizador organizador;
+	private Datos datosProcesados;
 
 	public GUI() {
 
@@ -111,11 +116,18 @@ public class GUI {
 
 		JLabel labelTabla = new JLabel("Materias disponibles");
 		panelTodosHorarios.add(labelTabla, BorderLayout.NORTH);
-		panelTodosHorarios.add(new JScrollPane(getTableData()),
+		panelTodosHorarios.add(new JScrollPane(this.tblTodosHorarios),
 				BorderLayout.CENTER);
 
 		// TODO JPanel Organizador
-		itemPlanOrganizador.setEnabled(false);
+		JPanel panelOptimo = new JPanel();
+		panelOptimo.setLayout(new BorderLayout());
+		panelOptimo.setSize(500, 480);
+
+		JLabel labelTablaOptimo = new JLabel("Optimo");
+		panelOptimo.add(labelTablaOptimo, BorderLayout.NORTH);
+		panelOptimo.add(new JScrollPane(this.tblOptimos),
+				BorderLayout.CENTER);
 
 		// JFrame
 		gui.setLayout(new BorderLayout());
@@ -173,12 +185,43 @@ public class GUI {
 				documentos = Documentos.instancia();
 				
 				if (documentos.isValid()) {
-					Datos datosProcesados;
 					
+					System.out.println("see");
 					datosProcesados = new Datos(documentos.getDocMateriasPosibles(), documentos.getDocHorarioMaterias());
-					setUpTableData(datosProcesados.getMapMaterias());
+					System.out.println("see2");
+					System.out.println(datosProcesados.getMapMaterias().size());
+					fillTblTodosHorarios(datosProcesados.getMapMaterias().getAllMaterias());
 					
-					gui.setContentPane(new JScrollPane(getTableData()));
+					gui.setContentPane(new JScrollPane(tblTodosHorarios));
+					gui.repaint();
+					gui.setVisible(true);
+				}
+			}
+		});
+		
+		itemPlanOrganizador.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				itemPlanOrganizador.setEnabled(false);
+
+				List<Integer> listaSelecionado = new ArrayList<Integer>(1);
+				
+				Documentos documentos;
+				documentos = Documentos.instancia();
+				
+				if (documentos.isValid() && datosProcesados != null) {
+					
+					organizador = new Organizador(datosProcesados.getMapMaterias(), 15, 30, listaSelecionado);
+					organizador.calcularHorarioOptimo();
+					
+					if (organizador.getListaSoluciones().size() > 0) 
+						fillTblOptimo(organizador.getListaSoluciones());
+					else
+						JOptionPane.showMessageDialog(null, "No existe soluciones");
+
+					gui.setContentPane(new JScrollPane(tblOptimos));
 					gui.repaint();
 					gui.setVisible(true);
 				}
@@ -231,26 +274,46 @@ public class GUI {
 
 	// Llenado de tabla
 	public JTable getTableData() {
-		return this.tabla;
+		return this.tblTodosHorarios;
 	}
 
-	public void setUpTableData(MultiMapa mapMaterias) {
+	public void fillTblTodosHorarios(List<Materia> listaMaterias) {
 		String[] colName = { "Codigo", "Nombre", "Paralelo", "Aula", "Horario",
 				"Creditos", "Num Matricua", "Categoria", "Prioridad" };
 		DefaultTableModel tableModel = new DefaultTableModel();
 		tableModel.setColumnIdentifiers(colName);
-		this.tabla = new JTable(tableModel);
+		tblTodosHorarios = new JTable(tableModel);
 
-		for (int i = 0; i < mapMaterias.size(); i++) {
-			for (int j = 0; j < mapMaterias.get(
-					mapMaterias.keySet().toArray()[i]).size(); j++) {
-				Object[] datos = new String[9];
-				datos = mapMaterias.get(mapMaterias.keySet().toArray()[i])
-						.get(j).getInfoMateria();
+		Object[] datos = new String[9];
+		for (Materia materia : listaMaterias) {
+			System.out.println(materia.getInfoMateria().toString());
+			datos = materia.getInfoMateria();
+			tableModel.addRow(datos);
+		}
+		
+		tblTodosHorarios.setModel(tableModel);
+	}
+	
+	public void fillTblOptimo(List<List<Materia>> listaSoluciones) {
+		String[] colName = { "Codigo", "Nombre", "Paralelo", "Aula", "Horario",
+				"Creditos", "Num Matricua", "Categoria", "Prioridad" };
+		
+		Object[] vacio = {"","","","","","","","",""};
+		
+		DefaultTableModel tableModel = new DefaultTableModel();
+		tableModel.setColumnIdentifiers(colName);
+		tblOptimos = new JTable(tableModel);
+
+		for (List<Materia> solucion : listaSoluciones) {
+		
+			Object[] datos = new String[9];
+			for (Materia materia : solucion) {
+				datos = materia.getInfoMateria();
 				tableModel.addRow(datos);
 			}
+			tableModel.addRow(vacio);
+			
 		}
-
-		this.tabla.setModel(tableModel);
+		tblOptimos.setModel(tableModel);
 	}
 }
