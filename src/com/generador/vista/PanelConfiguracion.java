@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -54,6 +55,23 @@ public class PanelConfiguracion implements Observer {
 				}
 			}
 		});
+
+		btnGuardar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				minCreditos = (int) spMinCreditos.getValue();
+				maxCreditos = (int) spMaxCreditos.getValue();
+
+				listaSeleccionado = new ArrayList<Integer>(2);
+				for (int i = 0; i < listaMaterias.size(); i++) {
+					if ((boolean)tblTodosHorarios.getModel().getValueAt(i
+							,tblTodosHorarios.getColumn("Obligatorio").getModelIndex()))
+						listaSeleccionado.add(i);
+				}
+			}
+		});
 	}
 
 	protected void setContenido(List<Materia> listaMaterias) {
@@ -82,14 +100,14 @@ public class PanelConfiguracion implements Observer {
 		tblTodosHorarios = new JTable(tableModel) {
 			//Agregado checkbox
 			@Override
-            public Class getColumnClass(int column) {
-                switch (column) {
-                    case 9:
-                        return Boolean.class;
-                    default:
-                        return String.class;
-                }
-            }
+			public Class getColumnClass(int column) {
+				switch (column) {
+				case 9:
+					return Boolean.class;
+				default:
+					return String.class;
+				}
+			}
 		};
 
 		//Contenido Jtable
@@ -109,7 +127,7 @@ public class PanelConfiguracion implements Observer {
 		tblTodosHorarios.setModel(tableModel);
 		tblTodosHorarios.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		tblTodosHorarios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+
 		JScrollPane scrollTabla = new JScrollPane(tblTodosHorarios);
 		scrollTabla.setPreferredSize(new Dimension(480, 300));
 
@@ -136,6 +154,10 @@ public class PanelConfiguracion implements Observer {
 
 	public int getMaxCreditos() {
 		return maxCreditos;
+	}
+	
+	public List<Integer> getListaSeleccionado() {
+		return listaSeleccionado;
 	}
 
 	@Override
