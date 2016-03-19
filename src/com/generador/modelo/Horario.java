@@ -273,4 +273,32 @@ public class Horario {
 			return false;
 		}
 	}
+	
+	/**
+	 * Toma todos los horarios de todos los días
+	 * @return Arreglo con todos horarios
+	 */
+	
+	public List<List<Integer>> getHorarios(){
+		List<List<Integer>> horarios = new ArrayList<List<Integer>>();
+		
+		horarios.add(this.getLunes());
+		horarios.add(this.getMartes());
+		horarios.add(this.getMiercoles());
+		horarios.add(this.getJueves());
+		horarios.add(this.getViernes());
+		horarios.add(this.getSabado());
+		
+		return horarios;
+	}
+
+	@Override
+	public String toString() {
+		return "Horario [" + (lunes != null ? "lunes=" + lunes + ", " : "")
+				+ (martes != null ? "martes=" + martes + ", " : "")
+				+ (miercoles != null ? "miercoles=" + miercoles + ", " : "")
+				+ (jueves != null ? "jueves=" + jueves + ", " : "")
+				+ (viernes != null ? "viernes=" + viernes + ", " : "") + (sabado != null ? "sabado=" + sabado : "")
+				+ "]";
+	}
 }

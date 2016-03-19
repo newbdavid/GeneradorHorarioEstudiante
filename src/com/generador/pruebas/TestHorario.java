@@ -67,17 +67,17 @@ public class TestHorario {
 				,false,false,true,false,false,false
 			},
 			{7, 9," 7-"+caracter+"9"
-				," "," ", "9-11"," "," "," "
-				," "," ", "11-13"," "," "," "
+				,"7-9","13-15 ", "9-11"," "," ","7-15"
+				,"9-11","11-13 ", "11-13"," "," "," "
 				,false,false,false,false,false,false
 			},
 			{7, 9,caracter+"7-"+caracter+"9"
-				," ","11-13"," "," ","11-13"," "
-				," "," ", "11-13"," "," "," "
+				,"15-17","11-13"," "," ","11-13","11-17"
+				,"13-15"," ", "11-13"," "," "," "
 				,false,false,false,false,false,false
 			},
 			{7, 9,caracter+"7- 9"
-				," ","9-11"," ","9-11"," "," "
+				," ","9-11"," ","9-11"," ","7-11"
 				,"7- 9"," ", "10-12"," "," "," "
 				,false,false,false,false,false,false
 			},
@@ -137,4 +137,82 @@ public class TestHorario {
 
 		assertEquals(listaChoque, listaResultado);
 	}
+	
+	@Test
+	public void getHorarios(){
+		List<List<Integer>> horarios = new ArrayList<List<Integer>>();
+		
+		horarios.add(horario1.getLunes());
+		horarios.add(horario1.getMartes());
+		horarios.add(horario1.getMiercoles());
+		horarios.add(horario1.getJueves());
+		horarios.add(horario1.getViernes());
+		horarios.add(horario1.getSabado());
+		
+		assertEquals(6, horarios.size());
+	}
+	
+	
+	@Test
+	public void suma (){
+		
+		Horario resultado = new Horario(" ", " ", " ", " ", " ", " ");
+		if (!listaChoque.contains(true)) {
+			resultado.setLunes(sumaHora(resultado.getLunes(), horario1.getLunes()));
+			resultado.setLunes(sumaHora(resultado.getLunes(), horario2.getLunes()));
+			resultado.setLunes(sumaHora(resultado.getLunes(), horario1.getMartes()));
+			resultado.setLunes(sumaHora(resultado.getLunes(), horario2.getMartes()));
+		}
+		
+		assertEquals(horario1.getSabado(),resultado.getLunes());
+	}
+	
+	public List<Integer> sumaHora (List<Integer> hora1, List<Integer> hora2) {
+		
+		boolean bandera = true;
+		
+		if (hora1 == null && hora2 == null) {
+			return hora1;
+		}
+		
+		if (hora1 == null && hora2 != null) {
+			return hora2;
+		}
+		
+		if (hora1 != null && hora2 == null) {
+			return hora1;
+		}
+		
+		if (hora1.size() >=4) {
+			for (int i = 1; i < hora1.size()-2; i += 2) {
+				
+				if ((hora1.get(i) == hora2.get(0)) && (hora1.get(i+1) == hora2.get(1))) {
+					hora1.remove(i);
+					hora1.remove(i);
+					return hora1;
+				}
+			}
+		}
+		
+		for (int i = 0; i < hora1.size(); i += 2) {
+
+			if ((hora1.get(i) == hora2.get(1)) && (hora1.get(i+1) != hora2.get(0))) {
+				hora1.remove(i);
+				hora1.add(i,hora2.get(0));
+				bandera = false;
+			} else if ((hora1.get(i+1) == hora2.get(0))	&& (hora1.get(i) != hora2.get(1))) {
+				hora1.remove(i+1);
+				hora1.add(i+1,hora2.get(1));
+				bandera = false;
+			}
+		}
+		
+		if (bandera) {
+			hora1.add(hora2.get(0));
+			hora1.add(hora2.get(1));
+		}
+		
+		return hora1;
+	}
+	
 }
