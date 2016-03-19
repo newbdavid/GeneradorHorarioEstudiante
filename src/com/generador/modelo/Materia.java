@@ -308,7 +308,7 @@ public class Materia {
 
 	public Object[] getInfoMateria() {
 		Object[] infoMateria = { getStrCodigo(), getStrNombre(),
-				getStrParalelo(), getStrAula(), getHorario(), getIntCreditos(),
+				getStrParalelo(), getStrAula(), getHorario().toString(), getIntCreditos(),
 				getIntNumMatricula(), getCategoria().getStrCategoria(),
 				getIntPrioridad() };
 		return infoMateria;
