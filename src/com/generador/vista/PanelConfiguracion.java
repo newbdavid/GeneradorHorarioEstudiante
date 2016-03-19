@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.generador.modelo.Materia;
 
-public class PanelConfiguracion implements Observer {
+public class PanelConfiguracion {
 
 	JPanel panelConfiguracion;
 	JLabel lblMinCreditos, lblMaxCreditos;
@@ -158,11 +158,5 @@ public class PanelConfiguracion implements Observer {
 	
 	public List<Integer> getListaSeleccionado() {
 		return listaSeleccionado;
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
 	}
 }
