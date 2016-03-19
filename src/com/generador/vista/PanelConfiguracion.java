@@ -42,7 +42,7 @@ public class PanelConfiguracion implements Observer {
 		tblTodosHorarios.addMouseListener(new MouseAdapter() {
 		    public void mousePressed(MouseEvent me) {
 		        int fila = tblTodosHorarios.rowAtPoint(me.getPoint());
-		        if (me.getClickCount() == 2) {
+		        if (me.getClickCount() == 2 && fila > -1 ) {
 		        	int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea elimnar la materia selecionada?"
 		        			, "Confirmación", JOptionPane.YES_NO_OPTION);
 		        	 if (respuesta == JOptionPane.YES_OPTION) {
