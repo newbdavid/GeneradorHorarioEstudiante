@@ -21,6 +21,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -62,18 +63,19 @@ public class PanelCookies extends Panel {
 			public void actionPerformed(ActionEvent e) {
 				if (txtCookies.getText().length() == 24) {
 					cookie.setStrCookies(txtCookies.getText());
-					autenticacionCarrera();
-					setDocHorarioMaterias(getDocHorarioMaterias());
-					setDocMateriasPosibles(getDocMateriasPosibles());
-
+					if (autenticacionCarrera()) {
+						setDocHorarioMaterias(getDocHorarioMaterias());
+						setDocMateriasPosibles(getDocMateriasPosibles());
+					}
 				} else {
-					JOptionPane.showMessageDialog(null,"Cookie de Sesión inválido");
+					JOptionPane.showMessageDialog(null,"Error\n"
+							+ "Longitud mínima cookie");
 				}
 			}
 		});
 	}
 
-	public void autenticacionCarrera () {
+	public boolean autenticacionCarrera () {
 		final WebClient webClient = new WebClient(BrowserVersion.FIREFOX_38);
 		Cookie cookies = new Cookie("saew.epn.edu.ec", "ASP.NET_SessionId", cookie.getStrCookies());
 		webClient.setAjaxController(new NicelyResynchronizingAjaxController());
@@ -96,15 +98,24 @@ public class PanelCookies extends Panel {
 				selectUser.setSelectedIndex(0);
 				webClient.waitForBackgroundJavaScript(1000);
 			}
-
 		} catch (FailingHttpStatusCodeException e1) {
-			JOptionPane.showMessageDialog(null, "Error:\nConexión no establecida");
+			JOptionPane.showMessageDialog(null, "Error\nConexión no establecida");
 			e1.printStackTrace();
+			return false;
+		} catch (ElementNotFoundException e1) {
+			JOptionPane.showMessageDialog(null, "Error\nValor ingresado no permite autenticacion");
+			e1.printStackTrace();
+			return false;
 		} catch (MalformedURLException e1) { 
 			e1.printStackTrace();
+			return false;
 		} catch (IOException e1) {
 			e1.printStackTrace();
+			return false;
 		}
+		
+		JOptionPane.showMessageDialog(null, "Autenticación correcta");
+		return true;
 	}
 
 	public Document getDocMateriasPosibles() {
@@ -116,7 +127,7 @@ public class PanelCookies extends Panel {
 					.get();
 		} catch (IOException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Error: Obtener materias posibles");
+			JOptionPane.showMessageDialog(null,"Error\nObtener materias posibles");
 		}
 
 		return materiasPosibles;
@@ -131,7 +142,7 @@ public class PanelCookies extends Panel {
 					.get();
 		} catch (IOException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Error: Obtener materias posibles");
+			JOptionPane.showMessageDialog(null,"Error\nObtener Horarios materias");
 		}
 
 		return horarios;
