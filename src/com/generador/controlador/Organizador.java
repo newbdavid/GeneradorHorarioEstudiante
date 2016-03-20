@@ -47,6 +47,9 @@ public class Organizador {
 
 	public void calcularHorarioOptimo () {
 
+		//Configurar en varias ocaciones
+		Configuration.reset();
+		
 		//Configuracion predeterminada
 		Configuration config = new DefaultConfiguration();
 
@@ -120,8 +123,8 @@ public class Organizador {
 		
 		int contadorObligatorias = 0;
 		for (Materia materia : listaMaterias) {
-			if (materia.getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"));
-			contadorObligatorias++;
+			if (materia.getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
+				contadorObligatorias++;
 		}
 		return contadorObligatorias;
 	}
