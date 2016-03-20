@@ -9,10 +9,13 @@ import java.net.MalformedURLException;
 import java.util.Observable;
 
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,7 +29,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import com.gargoylesoftware.htmlunit.util.Cookie;
 import com.generador.modelo.Cookies;
-import com.generador.utilidad.Formateador;
 
 /**
  * Clase que ofrece la vista de login por medio de Cookies
@@ -40,7 +42,7 @@ public class PanelCookies extends Panel {
 	private JPanel panelCookies;
 	private Cookies cookie;
 	private JLabel lblCookies;
-	private JFormattedTextField txtCookies;
+	private JTextField txtCookies;
 	private JButton btnAceptar;
 
 	public PanelCookies() {
@@ -141,8 +143,25 @@ public class PanelCookies extends Panel {
 		lblCookies.setHorizontalTextPosition(JLabel.CENTER);
 		lblCookies.setHorizontalAlignment(JLabel.CENTER);
 
-		txtCookies = new JFormattedTextField(Formateador.formatCookies());
-		txtCookies.setColumns(25);
+		txtCookies = new JTextField(25);
+		PlainDocument docCookies = new PlainDocument() {
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+
+				//Caracteres permitidos
+				for (int i=0;i<str.length();i++) {					
+					if (!Character.isJavaIdentifierPart((str.charAt(i)))) {
+						return;
+					}
+				}
+
+				//Limitar maximo caracteres
+				if ((getLength() + str.length()) <= 24) {
+					super.insertString(offs, str, a);
+				}
+			}
+		};
+		txtCookies.setDocument(docCookies);
 		txtCookies.setHorizontalAlignment(JLabel.CENTER);
 
 		btnAceptar = new JButton("Aceptar");
