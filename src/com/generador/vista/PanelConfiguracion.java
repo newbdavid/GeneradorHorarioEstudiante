@@ -113,7 +113,6 @@ public class PanelConfiguracion {
 		//Contenido Jtable
 		Object[] datos = new String[9];
 		for (Materia materia : listaMaterias) {
-			System.out.println(materia.getInfoMateria().toString());
 			datos = materia.getInfoMateria();
 			tableModel.addRow(datos);
 		}
