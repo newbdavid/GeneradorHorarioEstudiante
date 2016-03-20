@@ -24,13 +24,13 @@ import com.generador.modelo.Materia;
 
 public class PanelConfiguracion {
 
-	JPanel panelConfiguracion;
-	JLabel lblMinCreditos, lblMaxCreditos;
-	JSpinner spMinCreditos, spMaxCreditos;
-	JTable tblTodosHorarios;
-	JButton btnGuardar;
-	List<Materia> listaMaterias;
-	List <Integer> listaSeleccionado;
+	private JPanel panelConfiguracion;
+	private JLabel lblMinCreditos, lblMaxCreditos;
+	private JSpinner spMinCreditos, spMaxCreditos;
+	private JTable tblTodosHorarios;
+	private JButton btnGuardar;
+	private List<Materia> listaMaterias;
+	private List <Integer> listaSeleccionado;
 	int minCreditos, maxCreditos;
 
 	public PanelConfiguracion(List<Materia> listaMaterias) {
@@ -159,4 +159,9 @@ public class PanelConfiguracion {
 	public List<Integer> getListaSeleccionado() {
 		return listaSeleccionado;
 	}
+	
+	public List<Materia> getListaMaterias() {
+		return listaMaterias;
+	}
+	
 }
