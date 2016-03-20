@@ -17,7 +17,11 @@ public class Formateador {
 	
 	public static MaskFormatter formatPass(){
 		try {
-			return new MaskFormatter("AAAAAAAAAAAA");
+			int nulo = 0;
+			MaskFormatter mask = new MaskFormatter("************");
+			mask.setPlaceholderCharacter((char)nulo);
+			return mask;
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
