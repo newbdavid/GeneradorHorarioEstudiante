@@ -1,6 +1,7 @@
 package com.generador.pruebas;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +10,6 @@ import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.generador.controlador.Organizador;
@@ -36,7 +36,7 @@ public class TestOrganizador {
 		this.mapMaterias = datosProcesados.getMapMaterias();
 		
 		imprimir();
-		this.organizador = new Organizador(mapMaterias , minCreditos ,maxCreditos, listaMateriasSeleccionadas);
+		this.organizador = new Organizador(mapMaterias.getAllMaterias() , minCreditos ,maxCreditos, listaMateriasSeleccionadas);
 		optimo();
 		this.listaResultados = organizador.getListaSoluciones();
 	}

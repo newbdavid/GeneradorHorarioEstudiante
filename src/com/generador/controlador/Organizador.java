@@ -3,7 +3,6 @@ package com.generador.controlador;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.xalan.xsltc.compiler.sym;
 import org.jgap.Chromosome;
 import org.jgap.Configuration;
 import org.jgap.FitnessFunction;
@@ -15,7 +14,6 @@ import org.jgap.impl.BooleanGene;
 import org.jgap.impl.DefaultConfiguration;
 
 import com.generador.modelo.Materia;
-import com.generador.utilidad.MultiMapaMaterias;
 
 /**
  * Clase encargada de la optimización del horario
@@ -35,13 +33,14 @@ public class Organizador {
 	private int minCreditos;
 	private int maxCreditos;
 	
-	public Organizador(MultiMapaMaterias mapMaterias, int minCreditos ,int maxCreditos, List<Integer> listaSeleccionado) {
-		this.listaMaterias = mapMaterias.getAllMaterias();
+	public Organizador(List<Materia> listaMaterias, int minCreditos ,int maxCreditos, List<Integer> listaSeleccionado) {
+		this.listaMaterias = listaMaterias;
 		this.listaSoluciones = new ArrayList<List<Materia>>(5);
 		this.listaCromosomas = new ArrayList<IChromosome>();
 		this.listaSeleccionado = listaSeleccionado;
 		this.numeroMateriasDisponibles = this.listaMaterias.size();
-		this.numeroMateriasObligatorias = mapMaterias.getCantidadObligatorias() - 1;
+		//TODO Considerar Plan de titulacion
+		this.numeroMateriasObligatorias = intMateriasObligatorios(listaMaterias) - 1;
 		this.minCreditos = minCreditos;
 		this.maxCreditos = maxCreditos;
 	}
@@ -57,6 +56,7 @@ public class Organizador {
 		//Constructor fitness
 		FitnessFunction fitness = new FitnessHorario(listaMaterias, minCreditos, maxCreditos, listaSeleccionado);
 		
+		//TODO verificar si se consideran las materias TODAS la materias obligatorias 
 		int fitnessEsperado = numeroMateriasObligatorias * 10 + listaSeleccionado.size() * 100;
 		
 		try {
@@ -114,5 +114,15 @@ public class Organizador {
 
 	public void setListaSoluciones(List<List<Materia>> listaSoluciones) {
 		this.listaSoluciones = listaSoluciones;
+	}
+	
+	public int intMateriasObligatorios(List<Materia> listaMaterias) {
+		
+		int contadorObligatorias = 0;
+		for (Materia materia : listaMaterias) {
+			if (materia.getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"));
+			contadorObligatorias++;
+		}
+		return contadorObligatorias;
 	}
 }
