@@ -66,10 +66,10 @@ public class GUI {
 
 		// Menu Planificador
 		JMenu menuPlanificador = new JMenu("Planificador");
-		JMenuItem itemPlanTodos = new JMenuItem("Configuración");
-		JMenuItem itemPlanOrganizador = new JMenuItem("Organizador");
-		menuPlanificador.add(itemPlanTodos);
-		menuPlanificador.add(itemPlanOrganizador);
+		JMenuItem itemConfiguracion = new JMenuItem("Configuración");
+		JMenuItem itemOrganizador = new JMenuItem("Organizador");
+		menuPlanificador.add(itemConfiguracion);
+		menuPlanificador.add(itemOrganizador);
 
 		// Menu Ayuda
 		JMenu ayuda = new JMenu("Ayuda");
@@ -110,7 +110,7 @@ public class GUI {
 		itemExportar.setEnabled(false);
 
 		// TODO JPanel Organizador
-		itemPlanOrganizador.setEnabled(false);
+		itemOrganizador.setEnabled(false);
 		JPanel panelOptimo = new JPanel();
 		panelOptimo.setLayout(new BorderLayout());
 		panelOptimo.setSize(500, 480);
@@ -167,7 +167,7 @@ public class GUI {
 			}
 		});
 
-		itemPlanTodos.addActionListener(new ActionListener() {
+		itemConfiguracion.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -190,7 +190,7 @@ public class GUI {
 						panelTodosHorarios = new PanelConfiguracion(datosProcesados.getMapMaterias().getAllMaterias());
 					}
 					
-					itemPlanOrganizador.setEnabled(true);
+					itemOrganizador.setEnabled(true);
 					gui.setContentPane(panelTodosHorarios.getPanelConfiguracion());
 					gui.repaint();
 					gui.setVisible(true);
@@ -198,12 +198,12 @@ public class GUI {
 			}
 		});
 		
-		itemPlanOrganizador.addActionListener(new ActionListener() {
+		itemOrganizador.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				itemPlanOrganizador.setEnabled(false);
+				itemOrganizador.setEnabled(false);
 				
 				Documentos documentos;
 				documentos = Documentos.instancia();
