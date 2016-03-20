@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -111,6 +110,7 @@ public class GUI {
 		itemExportar.setEnabled(false);
 
 		// TODO JPanel Organizador
+		itemPlanOrganizador.setEnabled(false);
 		JPanel panelOptimo = new JPanel();
 		panelOptimo.setLayout(new BorderLayout());
 		panelOptimo.setSize(500, 480);
@@ -181,7 +181,7 @@ public class GUI {
 					
 					if (panelTodosHorarios != null) {
 						int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea volver a configurar el organizador?\n"
-								+ "Nota: Se perdera toda la configuración anterior"
+								+ "Nota: Se establecera la configuración por defecto"
 			        			, "Confirmación", JOptionPane.YES_NO_OPTION);
 			        	 if (respuesta == JOptionPane.YES_OPTION) {
 			        		 panelTodosHorarios = new PanelConfiguracion(datosProcesados.getMapMaterias().getAllMaterias());
@@ -189,6 +189,8 @@ public class GUI {
 					} else {
 						panelTodosHorarios = new PanelConfiguracion(datosProcesados.getMapMaterias().getAllMaterias());
 					}
+					
+					itemPlanOrganizador.setEnabled(true);
 					gui.setContentPane(panelTodosHorarios.getPanelConfiguracion());
 					gui.repaint();
 					gui.setVisible(true);
@@ -202,15 +204,16 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				
 				itemPlanOrganizador.setEnabled(false);
-
-				List<Integer> listaSelecionado = new ArrayList<Integer>(1);
 				
 				Documentos documentos;
 				documentos = Documentos.instancia();
 				
 				if (documentos.isValid() && datosProcesados != null) {
 					
-					organizador = new Organizador(datosProcesados.getMapMaterias(), 15, 30, listaSelecionado);
+					organizador = new Organizador(panelTodosHorarios.getListaMaterias()
+							, panelTodosHorarios.getMinCreditos()
+							, panelTodosHorarios.getMaxCreditos()
+							, panelTodosHorarios.getListaSeleccionado());
 					organizador.calcularHorarioOptimo();
 					
 					if (organizador.getListaSoluciones().size() > 0) 
