@@ -109,7 +109,7 @@ public class GUI {
 		// TODO JPanel Exportar
 		itemExportar.setEnabled(false);
 
-		// TODO JPanel Organizador
+		// JPanel Organizador
 		itemOrganizador.setEnabled(false);
 
 		// JFrame
@@ -212,13 +212,12 @@ public class GUI {
 					if (organizador.getListaSoluciones().size() > 0) {
 						System.out.println("Soluciones: "+ organizador.getListaSoluciones().size());
 						panelVisualizador = new PanelVisualizador(organizador.getListaSoluciones());
+						gui.setContentPane(panelVisualizador.getPanelVisualizador());
+						gui.repaint();
+						gui.setVisible(true);
 					} else {
 						JOptionPane.showMessageDialog(null, "No existe soluciones");
 					}
-
-					gui.setContentPane(panelVisualizador.getPanelVisualizador());
-					gui.repaint();
-					gui.setVisible(true);
 				}
 			}
 		});
