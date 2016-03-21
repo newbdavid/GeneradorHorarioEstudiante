@@ -32,12 +32,12 @@ import com.generador.modelo.Materia;
 public class GUI {
 
 	private String strCookie = "";
-	private JTable tblTodosHorarios, tblOptimos;
 	private String strPathMateriasPosibles = "";
 	private String strPathHorarios = "";
 	
 	private Panel panelWeb, panelCookies, panelArchivosLocales;
 	private PanelConfiguracion panelTodosHorarios;
+	private PanelVisualizador panelVisualizador;
 	private Organizador organizador;
 	private Datos datosProcesados;
 
@@ -109,16 +109,8 @@ public class GUI {
 		// TODO JPanel Exportar
 		itemExportar.setEnabled(false);
 
-		// TODO JPanel Organizador
+		// JPanel Organizador
 		itemOrganizador.setEnabled(false);
-		JPanel panelOptimo = new JPanel();
-		panelOptimo.setLayout(new BorderLayout());
-		panelOptimo.setSize(500, 480);
-
-		JLabel labelTablaOptimo = new JLabel("Optimo");
-		panelOptimo.add(labelTablaOptimo, BorderLayout.NORTH);
-		panelOptimo.add(new JScrollPane(this.tblOptimos),
-				BorderLayout.CENTER);
 
 		// JFrame
 		gui.setLayout(new BorderLayout());
@@ -214,16 +206,18 @@ public class GUI {
 							, panelTodosHorarios.getMinCreditos()
 							, panelTodosHorarios.getMaxCreditos()
 							, panelTodosHorarios.getListaSeleccionado());
+					
 					organizador.calcularHorarioOptimo();
 					
-					if (organizador.getListaSoluciones().size() > 0) 
-						fillTblOptimo(organizador.getListaSoluciones());
-					else
+					if (organizador.getListaSoluciones().size() > 0) {
+						System.out.println("Soluciones: "+ organizador.getListaSoluciones().size());
+						panelVisualizador = new PanelVisualizador(organizador.getListaSoluciones());
+						gui.setContentPane(panelVisualizador.getPanelVisualizador());
+						gui.repaint();
+						gui.setVisible(true);
+					} else {
 						JOptionPane.showMessageDialog(null, "No existe soluciones");
-
-					gui.setContentPane(new JScrollPane(tblOptimos));
-					gui.repaint();
-					gui.setVisible(true);
+					}
 				}
 			}
 		});
@@ -270,33 +264,5 @@ public class GUI {
 
 	public void setStrPathHorarios(String strPathHorarios) {
 		this.strPathHorarios = strPathHorarios;
-	}
-
-	// Llenado de tabla
-	public JTable getTableData() {
-		return this.tblTodosHorarios;
-	}
-	
-	public void fillTblOptimo(List<List<Materia>> listaSoluciones) {
-		String[] colName = { "Codigo", "Nombre", "Paralelo", "Aula", "Horario",
-				"Creditos", "Num Matricua", "Categoria", "Prioridad" };
-		
-		Object[] vacio = {"","","","","","","","",""};
-		
-		DefaultTableModel tableModel = new DefaultTableModel();
-		tableModel.setColumnIdentifiers(colName);
-		tblOptimos = new JTable(tableModel);
-
-		for (List<Materia> solucion : listaSoluciones) {
-		
-			Object[] datos = new String[9];
-			for (Materia materia : solucion) {
-				datos = materia.getInfoMateria();
-				tableModel.addRow(datos);
-			}
-			tableModel.addRow(vacio);
-			
-		}
-		tblOptimos.setModel(tableModel);
 	}
 }
