@@ -3,6 +3,7 @@ package com.generador.controlador;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.bcel.generic.CPInstruction;
 import org.jgap.Chromosome;
 import org.jgap.Configuration;
 import org.jgap.FitnessFunction;
@@ -59,7 +60,6 @@ public class Organizador {
 		//Constructor fitness
 		FitnessFunction fitness = new FitnessHorario(listaMaterias, minCreditos, maxCreditos, listaSeleccionado);
 		
-		//TODO verificar si se consideran las materias TODAS la materias obligatorias 
 		int fitnessEsperado = numeroMateriasObligatorias * 10 + listaSeleccionado.size() * 100;
 		
 		try {
@@ -90,7 +90,9 @@ public class Organizador {
 						&& !listaCromosomas.contains(cromosomaOptimo))
 				{
 					listaCromosomas.add(cromosomaOptimo);
+					System.out.println("Fitness: "+cromosomaOptimo.getFitnessValue());
 					listaSoluciones.add(resultado(cromosomaOptimo));
+					System.out.println();
 				}
 			}	
 		} catch (InvalidConfigurationException e) {
@@ -100,7 +102,6 @@ public class Organizador {
 
 	public List<Materia> resultado (IChromosome cromosomaOptimo) {
 
-		System.out.println();
 		List<Materia> solucion = new ArrayList<Materia>(8);
 		for (int i = 0; i < numeroMateriasDisponibles; i++) {
 			if ((boolean) cromosomaOptimo.getGene(i).getAllele()){
@@ -123,7 +124,8 @@ public class Organizador {
 		
 		int contadorObligatorias = 0;
 		for (Materia materia : listaMaterias) {
-			if (materia.getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
+			if (materia.getCategoria().getStrCategoria().equals("FORMACION PROFESIONAL")
+					&& materia.getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
 				contadorObligatorias++;
 		}
 		return contadorObligatorias;
