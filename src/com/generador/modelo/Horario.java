@@ -377,7 +377,7 @@ public class Horario {
 			for (int i = 1; i < horario.size()-1; i +=2) {
 				listaDesplazamiento.add(horario.get(i+1) - horario.get(i));
 			}		
-			System.out.println(listaDesplazamiento);
+			//System.out.println(listaDesplazamiento);
 		}
 		return listaDesplazamiento;
 	}

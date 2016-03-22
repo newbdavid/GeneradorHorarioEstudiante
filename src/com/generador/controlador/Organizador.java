@@ -14,6 +14,7 @@ import org.jgap.InvalidConfigurationException;
 import org.jgap.impl.BooleanGene;
 import org.jgap.impl.DefaultConfiguration;
 
+import com.generador.modelo.Horario;
 import com.generador.modelo.Materia;
 
 /**
@@ -91,10 +92,14 @@ public class Organizador {
 				{
 					listaCromosomas.add(cromosomaOptimo);
 					System.out.println("Fitness: "+cromosomaOptimo.getFitnessValue());
+
 					listaSoluciones.add(resultado(cromosomaOptimo));
 					System.out.println();
 				}
-			}	
+			}
+			System.out.println("Esperado:"+fitnessEsperado);
+			System.out.println("Obligatorias:"+numeroMateriasObligatorias);
+			System.out.println("Seleccionado:"+listaSeleccionado.size());
 		} catch (InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -109,6 +114,18 @@ public class Organizador {
 				System.out.println(listaMaterias.get(i).toString());
 			}
 		}
+		
+		List<Horario> listaHorarios = new ArrayList<Horario>();
+		Horario utilidad = new Horario(" ", " ", " ", " ", " ", " ");
+		Horario sumatorio = null, horasHuecas;
+		//Restricción horas huecas
+		for (Materia materia : solucion) {
+			listaHorarios.add(materia.getHorario());
+		}
+		sumatorio = utilidad.sumatorioHorarios(listaHorarios);
+		horasHuecas = utilidad.horasHuecas(sumatorio);
+		System.out.println("sumatorio"+sumatorio);
+		System.out.println("horasHuecas"+horasHuecas);
 		return solucion;
 	}
 
@@ -124,9 +141,12 @@ public class Organizador {
 		
 		int contadorObligatorias = 0;
 		for (Materia materia : listaMaterias) {
+			
 			if (materia.getCategoria().getStrCategoria().equals("FORMACION PROFESIONAL")
-					&& materia.getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
+					&& materia.getCategoria().getStrSubCategoria().equals("OBLIGATORIAS")) {
 				contadorObligatorias++;
+				System.out.println(materia.getStrNombre());
+			}
 		}
 		return contadorObligatorias;
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 
+import com.generador.modelo.Horario;
 import com.generador.modelo.Materia;
 
 public class FitnessHorario extends FitnessFunction {
@@ -65,6 +66,17 @@ public class FitnessHorario extends FitnessFunction {
 		//Restriccion min creditos
 		if (creditos < minCreditos)
 			return 0.0;
+		/*
+		List<Horario> listaHorarios = new ArrayList<Horario>();
+		Horario sumatorio, horasHuecas;
+		//Restricción horas huecas
+		for (Materia materia : auxOptimoMaterias) {
+			listaHorarios.add(materia.getHorario());
+		}
+		
+		sumatorio = Horario.sumatorioHorarios(listaHorarios);
+		horasHuecas = Horario.horasHuecas(sumatorio);*/
+		//System.out.println("fitness: "+valor * restriccion);
 		
 		return valor * restriccion;	
 	}
