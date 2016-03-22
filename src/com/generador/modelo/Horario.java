@@ -294,11 +294,10 @@ public class Horario {
 
 	@Override
 	public String toString() {
-		return "Horario [" + (lunes != null ? "lunes=" + lunes + ", " : "")
+		return (lunes != null ? "lunes=" + lunes + ", " : "")
 				+ (martes != null ? "martes=" + martes + ", " : "")
 				+ (miercoles != null ? "miercoles=" + miercoles + ", " : "")
 				+ (jueves != null ? "jueves=" + jueves + ", " : "")
-				+ (viernes != null ? "viernes=" + viernes + ", " : "") + (sabado != null ? "sabado=" + sabado : "")
-				+ "]";
+				+ (viernes != null ? "viernes=" + viernes + ", " : "") + (sabado != null ? "sabado=" + sabado : "");
 	}
 }
