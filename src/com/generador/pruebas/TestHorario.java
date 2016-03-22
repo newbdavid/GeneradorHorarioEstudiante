@@ -233,23 +233,21 @@ public class TestHorario {
 
 		System.out.println();
 		System.out.println("Horas semana: "+resultado.toString());
-
 		System.out.println("Horas huecas: "+horasHuecas(resultado).toString());
 
 	}
 
-	public List<Integer> diferencia(List<Integer> horario) {
+	public List<Integer> intervaloDesplazamiento (List<Integer> horario) {
 
-		List<Integer> diferencia = new ArrayList<Integer>();
+		List<Integer> listaDesplazamiento = new ArrayList<Integer>();
 		if (horario != null) {
 
-
 			for (int i = 1; i < horario.size()-1; i +=2) {
-				diferencia.add(horario.get(i+1) - horario.get(i));
+				listaDesplazamiento.add(horario.get(i+1) - horario.get(i));
 			}		
-			System.out.println(diferencia);
+			System.out.println(listaDesplazamiento);
 		}
-		return diferencia;
+		return listaDesplazamiento;
 	}
 
 	public Horario sumatorioHorarios (List<Horario> horarios){
@@ -285,12 +283,12 @@ public class TestHorario {
 
 		Horario horasHuecas = new Horario(" ", " ", " ", " ", " ", " ");
 
-		horasHuecas.setLunes(diferencia(horario.getLunes()));
-		horasHuecas.setMartes(diferencia(horario.getMartes()));
-		horasHuecas.setMiercoles(diferencia(horario.getMiercoles()));
-		horasHuecas.setJueves(diferencia(horario.getJueves()));
-		horasHuecas.setViernes(diferencia(horario.getViernes()));
-		horasHuecas.setSabado(diferencia(horario.getSabado()));
+		horasHuecas.setLunes(intervaloDesplazamiento(horario.getLunes()));
+		horasHuecas.setMartes(intervaloDesplazamiento(horario.getMartes()));
+		horasHuecas.setMiercoles(intervaloDesplazamiento(horario.getMiercoles()));
+		horasHuecas.setJueves(intervaloDesplazamiento(horario.getJueves()));
+		horasHuecas.setViernes(intervaloDesplazamiento(horario.getViernes()));
+		horasHuecas.setSabado(intervaloDesplazamiento(horario.getSabado()));
 
 		return horasHuecas;
 	}
