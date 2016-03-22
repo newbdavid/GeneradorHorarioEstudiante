@@ -23,7 +23,7 @@ public class TestHorario {
 	int vacio = 160;
 	List<Integer> listaLimpieza;
 	List<Boolean> listaChoque;
-	
+
 	public TestHorario(int inicio, int fin, String strHorario
 			, String lunes, String martes, String miercoles
 			, String jueves, String viernes, String sabado
@@ -48,13 +48,13 @@ public class TestHorario {
 		this.fin = fin;
 		this.caracter = ""+(char)vacio;
 	}
-	
+
 	@Parameterized.Parameters
 	public static Collection<Object[]> horarios() {
-		
+
 		int vacio = 160;
 		String caracter = ""+(char)vacio;
-		
+
 		return Arrays.asList(new Object[][]{
 			{7, 9," 7-9"
 				,"7-9"," ","7-9"," "," "," "
@@ -67,8 +67,8 @@ public class TestHorario {
 				,false,false,true,false,false,false
 			},
 			{7, 9," 7-"+caracter+"9"
-				,"7-9","13-15 ", "9-11"," "," ","7-15"
-				,"9-11","11-13 ", "11-13"," "," "," "
+				,"7-9","9-11", "9-11"," "," ","7-17"
+				,"11-13","13-17 ", "11-13"," "," "," "
 				,false,false,false,false,false,false
 			},
 			{7, 9,caracter+"7-"+caracter+"9"
@@ -98,7 +98,7 @@ public class TestHorario {
 			}
 		});
 	}
-	
+
 	@Before
 	public void inicio(){
 		if (!strHorario.equals(" ") && (!strHorario.equals(caracter))) {
@@ -108,17 +108,17 @@ public class TestHorario {
 			listaLimpieza = null;
 		}
 	}
-	
+
 	@Test
 	public void testGeneradorHorarioDia() {
 		assertEquals(listaLimpieza, horario1.generadorHorarioDia(strHorario));
 	}
-	
+
 	@Test
 	public void testColision () {
-		
+
 		List<Boolean> listaResultado = new ArrayList<>(6);
-		
+
 		listaResultado.add(horario1.colision(horario1.getLunes(), horario2.getLunes()));
 		listaResultado.add(horario1.colision(horario1.getMartes(), horario2.getMartes()));
 		listaResultado.add(horario1.colision(horario1.getMiercoles(), horario2.getMiercoles()));
@@ -128,34 +128,34 @@ public class TestHorario {
 
 		assertEquals(listaChoque, listaResultado);
 	}
-	
+
 	@Test
 	public void testColisiones () {
-		
+
 		List<Boolean> listaResultado = new ArrayList<>(6);
 		listaResultado = horario1.colisiones(horario2);
 
 		assertEquals(listaChoque, listaResultado);
 	}
-	
+
 	@Test
 	public void getHorarios(){
 		List<List<Integer>> horarios = new ArrayList<List<Integer>>();
-		
+
 		horarios.add(horario1.getLunes());
 		horarios.add(horario1.getMartes());
 		horarios.add(horario1.getMiercoles());
 		horarios.add(horario1.getJueves());
 		horarios.add(horario1.getViernes());
 		horarios.add(horario1.getSabado());
-		
+
 		assertEquals(6, horarios.size());
 	}
-	
-	
+
+
 	@Test
-	public void suma (){
-		
+	public void suma () {
+
 		Horario resultado = new Horario(" ", " ", " ", " ", " ", " ");
 		if (!listaChoque.contains(true)) {
 			resultado.setLunes(sumaHora(resultado.getLunes(), horario1.getLunes()));
@@ -163,29 +163,28 @@ public class TestHorario {
 			resultado.setLunes(sumaHora(resultado.getLunes(), horario1.getMartes()));
 			resultado.setLunes(sumaHora(resultado.getLunes(), horario2.getMartes()));
 		}
-		
 		assertEquals(horario1.getSabado(),resultado.getLunes());
 	}
-	
+
 	public List<Integer> sumaHora (List<Integer> hora1, List<Integer> hora2) {
-		
+
 		boolean bandera = true;
-		
+
 		if (hora1 == null && hora2 == null) {
 			return hora1;
 		}
-		
+
 		if (hora1 == null && hora2 != null) {
 			return hora2;
 		}
-		
+
 		if (hora1 != null && hora2 == null) {
 			return hora1;
 		}
-		
+
 		if (hora1.size() >=4) {
 			for (int i = 1; i < hora1.size()-2; i += 2) {
-				
+
 				if ((hora1.get(i) == hora2.get(0)) && (hora1.get(i+1) == hora2.get(1))) {
 					hora1.remove(i);
 					hora1.remove(i);
@@ -193,7 +192,7 @@ public class TestHorario {
 				}
 			}
 		}
-		
+
 		for (int i = 0; i < hora1.size(); i += 2) {
 
 			if ((hora1.get(i) == hora2.get(1)) && (hora1.get(i+1) != hora2.get(0))) {
@@ -206,13 +205,93 @@ public class TestHorario {
 				bandera = false;
 			}
 		}
-		
+
 		if (bandera) {
 			hora1.add(hora2.get(0));
 			hora1.add(hora2.get(1));
 		}
-		
+
 		return hora1;
 	}
-	
+
+	@Test
+	public void sumaHorario() {
+
+		Horario materia1 = new Horario("7-9", "7-10", " ", " ", " ", " ");
+		Horario materia2 = new Horario("9-11", "11-14", " ", " ", " ", " ");
+		Horario materia3 = new Horario("11-13", "19-20", " ", " ", " ", " ");
+		Horario materia4 = new Horario("13-15", " ", " ", " ", " ", " ");
+		Horario resultado = new Horario(" ", " ", " ", " ", " ", " ");
+
+		List<Horario> listaHorarios = new ArrayList<Horario>();
+		listaHorarios.add(materia1);
+		listaHorarios.add(materia2);
+		listaHorarios.add(materia3);
+		listaHorarios.add(materia4); 
+
+		resultado = sumatorioHorarios(listaHorarios);
+
+		System.out.println();
+		System.out.println("Horas semana: "+resultado.toString());
+
+		System.out.println("Horas huecas: "+horasHuecas(resultado).toString());
+
+	}
+
+	public List<Integer> diferencia(List<Integer> horario) {
+
+		List<Integer> diferencia = new ArrayList<Integer>();
+		if (horario != null) {
+
+
+			for (int i = 1; i < horario.size()-1; i +=2) {
+				diferencia.add(horario.get(i+1) - horario.get(i));
+			}		
+			System.out.println(diferencia);
+		}
+		return diferencia;
+	}
+
+	public Horario sumatorioHorarios (List<Horario> horarios){
+
+		Horario resultado = new Horario(" ", " ", " ", " ", " ", " ");
+
+		for (Horario horario : horarios) {
+			resultado.setLunes(sumaHora(resultado.getLunes(), horario.getLunes()));
+			resultado.setMartes(sumaHora(resultado.getMartes(), horario.getMartes()));
+			resultado.setMiercoles(sumaHora(resultado.getMiercoles(), horario.getMiercoles()));
+			resultado.setJueves(sumaHora(resultado.getJueves(), horario.getJueves()));
+			resultado.setViernes(sumaHora(resultado.getViernes(), horario.getViernes()));
+			resultado.setSabado(sumaHora(resultado.getSabado(), horario.getSabado()));
+		}
+
+		if (resultado.getLunes() != null) 
+			resultado.getLunes().sort(null);
+		if (resultado.getMartes() != null)
+			resultado.getMartes().sort(null);
+		if (resultado.getMiercoles() != null)
+			resultado.getMiercoles().sort(null);
+		if (resultado.getJueves() != null)
+			resultado.getJueves().sort(null);
+		if (resultado.getViernes() != null)
+			resultado.getViernes().sort(null);
+		if (resultado.getSabado() != null)
+			resultado.getSabado().sort(null);
+
+		return resultado;
+	}
+
+	public Horario horasHuecas (Horario horario) {
+
+		Horario horasHuecas = new Horario(" ", " ", " ", " ", " ", " ");
+
+		horasHuecas.setLunes(diferencia(horario.getLunes()));
+		horasHuecas.setMartes(diferencia(horario.getMartes()));
+		horasHuecas.setMiercoles(diferencia(horario.getMiercoles()));
+		horasHuecas.setJueves(diferencia(horario.getJueves()));
+		horasHuecas.setViernes(diferencia(horario.getViernes()));
+		horasHuecas.setSabado(diferencia(horario.getSabado()));
+
+		return horasHuecas;
+	}
 }
