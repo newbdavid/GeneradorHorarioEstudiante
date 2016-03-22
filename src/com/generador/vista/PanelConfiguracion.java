@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import com.generador.modelo.Materia;
 
@@ -70,20 +71,21 @@ public class PanelConfiguracion {
 							,tblTodosHorarios.getColumn("Obligatorio").getModelIndex()))
 						listaSeleccionado.add(i);
 				}
+				JOptionPane.showMessageDialog(null, "Configuración guardada");
 			}
 		});
 	}
 
 	protected void setContenido(List<Materia> listaMaterias) {
-		lblMinCreditos = new JLabel("Minimo creditos");
+		lblMinCreditos = new JLabel("Mínimo créditos");
 		lblMinCreditos.setHorizontalTextPosition(JLabel.CENTER);
 		spMinCreditos = new JSpinner(new SpinnerNumberModel(15, 0, 30, 1));
 
-		lblMaxCreditos = new JLabel("Máximo creditos");
+		lblMaxCreditos = new JLabel("Máximo créditos");
 		lblMaxCreditos.setHorizontalTextPosition(JLabel.CENTER);
-		spMaxCreditos = new JSpinner(new SpinnerNumberModel(30, 0, 30, 1)); 
+		spMaxCreditos = new JSpinner(new SpinnerNumberModel(30, 0, 33, 1)); 
 
-		String[] colName = { "Codigo", "Nombre", "Paralelo", "Aula", "Horario",
+		String[] colName = { "Grupo", "Nombre", "Código", "Aula", "Horario",
 				"Creditos", "Num Matricua", "Categoria", "Prioridad" };
 
 		//JTable no editable
@@ -102,7 +104,7 @@ public class PanelConfiguracion {
 			@Override
 			public Class getColumnClass(int column) {
 				switch (column) {
-				case 9:
+				case 0:
 					return Boolean.class;
 				default:
 					return String.class;
@@ -129,9 +131,11 @@ public class PanelConfiguracion {
 
 		JScrollPane scrollTabla = new JScrollPane(tblTodosHorarios);
 		scrollTabla.setPreferredSize(new Dimension(480, 300));
-
-		tblTodosHorarios.getColumnModel().getColumn(1).setPreferredWidth(300);
-		tblTodosHorarios.getColumnModel().getColumn(4).setPreferredWidth(300);
+		
+		tblTodosHorarios.moveColumn(9,0);
+		tblTodosHorarios.getColumnModel().getColumn(1).setPreferredWidth(50);
+		tblTodosHorarios.getColumnModel().getColumn(2).setPreferredWidth(300);
+		tblTodosHorarios.getColumnModel().getColumn(5).setPreferredWidth(300);
 		tblTodosHorarios.setFillsViewportHeight(true);
 		btnGuardar = new JButton("Guardar");
 
@@ -140,6 +144,11 @@ public class PanelConfiguracion {
 		panelConfiguracion.add(lblMaxCreditos, BorderLayout.CENTER);
 		panelConfiguracion.add(spMaxCreditos, BorderLayout.CENTER);
 		panelConfiguracion.add(scrollTabla, BorderLayout.CENTER);
+		panelConfiguracion.add(new JLabel("<html><p>Uso:</p<ul>"
+				+ "<li>Doble clic elimina materia</li>"
+				+ "<li>Clic opción \"Obligatorio\" los horarios generados<br>contendrán la materia seleccionada</li>"
+				+ "</lu>"
+				+ "</html>"), BorderLayout.CENTER);
 		panelConfiguracion.add(btnGuardar, BorderLayout.CENTER);
 	}
 
