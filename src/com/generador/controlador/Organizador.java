@@ -1,6 +1,7 @@
 package com.generador.controlador;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.jgap.Chromosome;
@@ -85,7 +86,7 @@ public class Organizador {
 			for (int i = 0; i < 2500; i++) {
 				poblacion.evolve();
 				cromosomaOptimo = poblacion.getFittestChromosome();
-				
+
 				if (cromosomaOptimo.getFitnessValue() >= fitnessEsperado 
 						&& !listaCromosomas.contains(cromosomaOptimo))
 				{
@@ -100,12 +101,11 @@ public class Organizador {
 
 	public List<Materia> resultado (IChromosome cromosomaOptimo) {
 
-		System.out.println();
 		List<Materia> solucion = new ArrayList<Materia>(8);
+			
 		for (int i = 0; i < numeroMateriasDisponibles; i++) {
 			if ((boolean) cromosomaOptimo.getGene(i).getAllele()){
 				solucion.add(listaMaterias.get(i));
-				System.out.println(listaMaterias.get(i).toString());
 			}
 		}
 		return solucion;
@@ -122,10 +122,23 @@ public class Organizador {
 	public int intMateriasObligatorios(List<Materia> listaMaterias) {
 		
 		int contadorObligatorias = 0;
+		
+		HashMap<Object, Materia> hashMap = new HashMap<>();
+		
 		for (Materia materia : listaMaterias) {
-			if (materia.getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
+			try {
+				hashMap.put(materia.getStrCodigo(), materia);
+			} catch (Exception e) {
+			}
+		}
+		
+		Object[] keys = hashMap.keySet().toArray();
+		
+		for (int i = 0; i < keys.length; i++) {
+			if (hashMap.get(keys[i]).getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
 				contadorObligatorias++;
 		}
+		
 		return contadorObligatorias;
 	}
 }
