@@ -292,8 +292,16 @@ public class Horario {
 		return horarios;
 	}
 
-	private List<Integer> sumaHora (List<Integer> hora1, List<Integer> hora2) {
+	private List<Integer> sumaHora (List<Integer> hora1, List<Integer> a) {
 
+		List<Integer> hora2 = new ArrayList<Integer>();
+		
+		//Copiar contenido de horario a sumar
+		if (a != null)
+			hora2.addAll(a);
+		else
+			hora2 = null;
+		
 		boolean bandera = true;
 
 		if (hora1 == null && hora2 == null) {
@@ -308,6 +316,7 @@ public class Horario {
 			return hora1;
 		}
 
+		//Hora con dos colisiones
 		if (hora1.size() >=4) {
 			for (int i = 1; i < hora1.size()-2; i += 2) {
 
@@ -319,6 +328,7 @@ public class Horario {
 			}
 		}
 
+		//Hora con colisiones internas
 		for (int i = 0; i < hora1.size(); i += 2) {
 
 			if ((hora1.get(i) == hora2.get(1)) && (hora1.get(i+1) != hora2.get(0))) {
@@ -376,8 +386,7 @@ public class Horario {
 
 			for (int i = 1; i < horario.size()-1; i +=2) {
 				listaDesplazamiento.add(horario.get(i+1) - horario.get(i));
-			}		
-			//System.out.println(listaDesplazamiento);
+			}
 		}
 		return listaDesplazamiento;
 	}
