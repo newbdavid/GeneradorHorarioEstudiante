@@ -86,7 +86,7 @@ public class Organizador {
 			for (int i = 0; i < 2500; i++) {
 				poblacion.evolve();
 				cromosomaOptimo = poblacion.getFittestChromosome();
-				
+
 				if (cromosomaOptimo.getFitnessValue() >= fitnessEsperado 
 						&& !listaCromosomas.contains(cromosomaOptimo))
 				{
@@ -108,10 +108,10 @@ public class Organizador {
 	public List<Materia> resultado (IChromosome cromosomaOptimo) {
 
 		List<Materia> solucion = new ArrayList<Materia>(8);
+			
 		for (int i = 0; i < numeroMateriasDisponibles; i++) {
 			if ((boolean) cromosomaOptimo.getGene(i).getAllele()){
 				solucion.add(listaMaterias.get(i));
-				System.out.println(listaMaterias.get(i).toString());
 			}
 		}
 		

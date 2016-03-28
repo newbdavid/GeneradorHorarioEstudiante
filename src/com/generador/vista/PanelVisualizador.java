@@ -47,13 +47,17 @@ public class PanelVisualizador {
 			JScrollPane scrollMaterias = new JScrollPane(tblMaterias);
 			scrollMaterias.setPreferredSize(new Dimension(240, 200));
 
+			tblMaterias.getColumnModel().getColumn(0).setPreferredWidth(50);
+			tblMaterias.getColumnModel().getColumn(1).setPreferredWidth(300);
+			tblMaterias.getColumnModel().getColumn(4).setPreferredWidth(300);
+			
 			panelVisualizador.add(scrollVisualizador, BorderLayout.CENTER);
 			panelVisualizador.add(scrollMaterias, BorderLayout.CENTER);
 		}
 	}
 
 	public DefaultTableModel fillTblMaterias(List<Materia> listaMaterias) {
-		String[] colName = { "Codigo", "Nombre", "Paralelo", "Aula", "Horario",
+		String[] colName = { "Grupo", "Nombre", "Código", "Aula", "Horario",
 				"Creditos", "Num Matricua", "Categoria", "Prioridad" };
 
 		DefaultTableModel tableModel = new DefaultTableModel() {
