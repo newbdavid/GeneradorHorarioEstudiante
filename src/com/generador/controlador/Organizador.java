@@ -1,9 +1,9 @@
 package com.generador.controlador;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import org.apache.bcel.generic.CPInstruction;
 import org.jgap.Chromosome;
 import org.jgap.Configuration;
 import org.jgap.FitnessFunction;
@@ -42,7 +42,7 @@ public class Organizador {
 		this.listaSeleccionado = listaSeleccionado;
 		this.numeroMateriasDisponibles = this.listaMaterias.size();
 		//TODO Considerar Plan de titulacion
-		this.numeroMateriasObligatorias = intMateriasObligatorios(listaMaterias) - 1;
+		this.numeroMateriasObligatorias = intMateriasObligatorios(listaMaterias);
 		this.minCreditos = minCreditos;
 		this.maxCreditos = maxCreditos;
 	}
@@ -61,7 +61,7 @@ public class Organizador {
 		//Constructor fitness
 		FitnessFunction fitness = new FitnessHorario(listaMaterias, minCreditos, maxCreditos, listaSeleccionado);
 		
-		int fitnessEsperado = numeroMateriasObligatorias * 10 + listaSeleccionado.size() * 100;
+		int fitnessEsperado = numeroMateriasObligatorias * 1000 + listaSeleccionado.size() * 1000;
 		
 		try {
 			//Configurar fitness
@@ -116,16 +116,12 @@ public class Organizador {
 		}
 		
 		List<Horario> listaHorarios = new ArrayList<Horario>();
-		Horario utilidad = new Horario(" ", " ", " ", " ", " ", " ");
-		Horario sumatorio = null, horasHuecas;
+		
 		//Restricción horas huecas
 		for (Materia materia : solucion) {
 			listaHorarios.add(materia.getHorario());
 		}
-		sumatorio = utilidad.sumatorioHorarios(listaHorarios);
-		horasHuecas = utilidad.horasHuecas(sumatorio);
-		System.out.println("sumatorio"+sumatorio);
-		System.out.println("horasHuecas"+horasHuecas);
+		
 		return solucion;
 	}
 
@@ -140,14 +136,24 @@ public class Organizador {
 	public int intMateriasObligatorios(List<Materia> listaMaterias) {
 		
 		int contadorObligatorias = 0;
+		
+		HashMap<Object, Materia> hashMap = new HashMap<>();
+		
 		for (Materia materia : listaMaterias) {
-			
-			if (materia.getCategoria().getStrCategoria().equals("FORMACION PROFESIONAL")
-					&& materia.getCategoria().getStrSubCategoria().equals("OBLIGATORIAS")) {
-				contadorObligatorias++;
-				System.out.println(materia.getStrNombre());
+			try {
+				hashMap.put(materia.getStrCodigo(), materia);
+			} catch (Exception e) {
 			}
 		}
+		
+		Object[] keys = hashMap.keySet().toArray();
+		
+		for (int i = 0; i < keys.length; i++) {
+			if (hashMap.get(keys[i]).getCategoria().getStrCategoria().equals("FORMACION PROFESIONAL")
+					&& hashMap.get(keys[i]).getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
+				contadorObligatorias++;
+		}
+		
 		return contadorObligatorias;
 	}
 }
