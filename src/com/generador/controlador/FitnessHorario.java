@@ -6,6 +6,7 @@ import java.util.List;
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 
+import com.generador.modelo.Horario;
 import com.generador.modelo.Materia;
 
 public class FitnessHorario extends FitnessFunction {
@@ -50,11 +51,11 @@ public class FitnessHorario extends FitnessFunction {
 				//Materias obligatorias
 				if (listaMaterias.get(i).getCategoria().getStrCategoria().equals("FORMACION PROFESIONAL")
 						&& listaMaterias.get(i).getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
-					valor += 10;
+					valor += 1000;
 				
 				//Lista seleccionado
 				if (listaSeleccionado.contains(i))
-					valor += 100;
+					valor += 1000;
 				
 				//Restriccion max creditos
 				if (creditos > maxCreditos)
@@ -65,6 +66,59 @@ public class FitnessHorario extends FitnessFunction {
 		//Restriccion min creditos
 		if (creditos < minCreditos)
 			return 0.0;
+				
+		List<Horario> listaHorarios = new ArrayList<Horario>();
+		int contadorHuecas = 0;
+		Horario utilidad = new Horario(" ", " ", " ", " ", " ", " ");
+		Horario sumatorio = null, horasHuecas;
+		
+		//Restricción horas huecas
+		for (Materia materia : auxOptimoMaterias) {
+			listaHorarios.add(materia.getHorario());
+		}
+		
+		sumatorio = utilidad.sumatorioHorarios(listaHorarios);
+		horasHuecas = utilidad.horasHuecas(sumatorio);
+		
+		for (List<Integer> hueco : horasHuecas.getHorarios()) {
+			
+			if (hueco != null && hueco.size() != 0) {
+				contadorHuecas += hueco.size();
+				
+				if (hueco.contains(1)){
+					valor += 20;
+				} else if (hueco.contains(2)){
+					valor += 15;
+				} else if (hueco.contains(3)) {
+					valor += 10;
+				} else if (hueco.contains(4)) {
+					valor += 5;
+				} else {
+					//Penalización horas huecas grandes
+					valor -= 50;
+				}
+			} else {
+				valor += 25;
+			}
+		}
+		
+		if (contadorHuecas == 0 ) {
+			valor += 50;
+		} else if (contadorHuecas < 4) {
+			valor += 25;
+		} else if (contadorHuecas < 6) {
+			valor += 15;
+		} else if (contadorHuecas < 8) {
+			valor += 5;
+		} else {
+			valor -= 50;
+		}
+		
+		valor -= contadorHuecas;
+		
+		if (valor < 0) {
+			return 0.0;
+		}
 		
 		return valor * restriccion;	
 	}

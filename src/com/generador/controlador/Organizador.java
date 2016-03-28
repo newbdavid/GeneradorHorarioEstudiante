@@ -14,6 +14,7 @@ import org.jgap.InvalidConfigurationException;
 import org.jgap.impl.BooleanGene;
 import org.jgap.impl.DefaultConfiguration;
 
+import com.generador.modelo.Horario;
 import com.generador.modelo.Materia;
 
 /**
@@ -41,7 +42,7 @@ public class Organizador {
 		this.listaSeleccionado = listaSeleccionado;
 		this.numeroMateriasDisponibles = this.listaMaterias.size();
 		//TODO Considerar Plan de titulacion
-		this.numeroMateriasObligatorias = intMateriasObligatorios(listaMaterias) - 1;
+		this.numeroMateriasObligatorias = intMateriasObligatorios(listaMaterias);
 		this.minCreditos = minCreditos;
 		this.maxCreditos = maxCreditos;
 	}
@@ -60,8 +61,7 @@ public class Organizador {
 		//Constructor fitness
 		FitnessFunction fitness = new FitnessHorario(listaMaterias, minCreditos, maxCreditos, listaSeleccionado);
 		
-		//TODO verificar si se consideran las materias TODAS la materias obligatorias 
-		int fitnessEsperado = numeroMateriasObligatorias * 10 + listaSeleccionado.size() * 100;
+		int fitnessEsperado = numeroMateriasObligatorias * 1000 + listaSeleccionado.size() * 1000;
 		
 		try {
 			//Configurar fitness
@@ -91,9 +91,15 @@ public class Organizador {
 						&& !listaCromosomas.contains(cromosomaOptimo))
 				{
 					listaCromosomas.add(cromosomaOptimo);
+					System.out.println("Fitness: "+cromosomaOptimo.getFitnessValue());
+
 					listaSoluciones.add(resultado(cromosomaOptimo));
+					System.out.println();
 				}
-			}	
+			}
+			System.out.println("Esperado:"+fitnessEsperado);
+			System.out.println("Obligatorias:"+numeroMateriasObligatorias);
+			System.out.println("Seleccionado:"+listaSeleccionado.size());
 		} catch (InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -108,6 +114,14 @@ public class Organizador {
 				solucion.add(listaMaterias.get(i));
 			}
 		}
+		
+		List<Horario> listaHorarios = new ArrayList<Horario>();
+		
+		//Restricción horas huecas
+		for (Materia materia : solucion) {
+			listaHorarios.add(materia.getHorario());
+		}
+		
 		return solucion;
 	}
 
@@ -135,7 +149,8 @@ public class Organizador {
 		Object[] keys = hashMap.keySet().toArray();
 		
 		for (int i = 0; i < keys.length; i++) {
-			if (hashMap.get(keys[i]).getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
+			if (hashMap.get(keys[i]).getCategoria().getStrCategoria().equals("FORMACION PROFESIONAL")
+					&& hashMap.get(keys[i]).getCategoria().getStrSubCategoria().equals("OBLIGATORIAS"))
 				contadorObligatorias++;
 		}
 		

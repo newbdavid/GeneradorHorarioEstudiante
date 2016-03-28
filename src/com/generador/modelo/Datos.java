@@ -44,7 +44,7 @@ public class Datos {
 		Elements tablaMateriasPosibles = docMateriasPosibles
 				.getElementsByClass("controlgrilla").get(0).children().get(0)
 				.children();
-
+		
 		// Horario Materias
 		this.docHorarioMaterias = horariosMaterias;
 		Elements tablaHorarioMaterias = docHorarioMaterias
@@ -53,7 +53,7 @@ public class Datos {
 
 		// Almacenamiento Materias Posibles
 		MultiMapaMaterias mapTablaMateriasPosibles = new MultiMapaMaterias();
-		for (int i = 1; i < tablaMateriasPosibles.size() - 1; i++) {
+		for (int i = 1; i < tablaMateriasPosibles.size(); i++) {
 			materia = tablaMateriasPosibles.get(i);
 			infoMateria = materia.children();
 
