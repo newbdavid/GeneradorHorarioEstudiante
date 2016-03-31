@@ -35,6 +35,20 @@ public class TestHorarioOptimo {
 		assertEquals(93, creditos);
 	}
 	
+	@Test
+	public void testMateriasObligatorias() {
+		
+		int contadorObligatorias = 0;
+		
+		for (Materia materia : listaMaterias) {
+			
+			if (materia.getCategoria().getStrSubCategoria().equalsIgnoreCase("OBLIGATORIAS"))
+				contadorObligatorias++;
+		}
+
+		assertEquals(15, contadorObligatorias);
+	}
+	
 	public Document documento(String nombreArchivo) {
 
 		File input = new File("./"+nombreArchivo+".html");
